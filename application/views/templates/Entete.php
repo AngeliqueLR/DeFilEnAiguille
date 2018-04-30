@@ -72,7 +72,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <?php if ($this->session->statut=='Client' or is_null($this->session->statut)) : ?>
-                            <li class="active"><a href="<?php echo site_url('Visiteur/Panier') ?>"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>&nbsp;&nbsp; 
+                            <li class="active"><a href="<?php echo site_url('Visiteur/VoirPanier') ?>"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>&nbsp;&nbsp; 
                         <?php endif; ?>    
                         <?php if (!is_null($this->session->identifiant)) : ?>
                             <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span><?php echo ' Bonjour : <B>'.$this->session->prenom.' '.$this->session->nom.'</B>&nbsp;&nbsp;';?></a></li>

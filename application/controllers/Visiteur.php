@@ -7,6 +7,7 @@
             $this->load->helper('url');
             $this->load->helper('assets');
             $this->load->library("pagination");
+            $this->load->library('cart');           
             $this->load->model('ModeleArticle');          
             $this->load->model('ModeleUtilisateur');          
         }
@@ -21,13 +22,18 @@
             $DonneesEnvoyees['TitreDePage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
 
             $this->load->view('templates/Entete', $Catalogue);
-            $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees);
+            $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees, $Catalogue);
             $this->load->view('templates/PiedDePage');            
         }
 
         public function voirUnProduit($pNoProduit = NULL)
         {
             $Catalogue['Catalogue'] = 'non';
+
+            $this->load->helper('form');
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('txtQuantiteDesiree', 'required');
 
             $DonneesEnvoyees['unProduit'] = $this->ModeleArticle->retournerProduit($pNoProduit);
 
@@ -40,7 +46,7 @@
             //récupère le nom du produit et l'ajoute comme titre
 
             $this->load->view('templates/Entete', $Catalogue);
-            $this->load->view('Visiteur/VoirUnProduit', $DonneesEnvoyees);
+            $this->load->view('Visiteur/VoirUnProduit', $DonneesEnvoyees, $Catalogue);
             $this->load->view('templates/PiedDePage');            
         }
 
@@ -216,7 +222,7 @@ En espérant que vous trouverez votre bonheur chez nous.';
             $DonneesEnvoyees['LesProduits'] = $this->ModeleArticle->retournerArticlesLimite($config["per_page"], $noPage);
             $DonneesEnvoyees['liensPagination'] = $this->pagination->create_links();
             $this->load->view('templates/Entete', $Catalogue);
-            $this->load->view('Visiteur/CatalogueAvecPagination', $DonneesEnvoyees);
+            $this->load->view('Visiteur/CatalogueAvecPagination', $DonneesEnvoyees, $Catalogue);
             $this->load->view('templates/PiedDePage');  
         }
 
@@ -239,7 +245,7 @@ En espérant que vous trouverez votre bonheur chez nous.';
             $DonneesEnvoyees['TitreDePage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
 
             $this->load->view('templates/Entete', $Catalogue);
-            $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees);
+            $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees, $Catalogue);
             $this->load->view('templates/PiedDePage');            
         }
 
@@ -253,7 +259,7 @@ En espérant que vous trouverez votre bonheur chez nous.';
             $DonneesEnvoyees['TitreDePage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
 
             $this->load->view('templates/Entete', $Catalogue);
-            $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees);
+            $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees, $Catalogue);
             $this->load->view('templates/PiedDePage');            
         }
 
@@ -266,8 +272,85 @@ En espérant que vous trouverez votre bonheur chez nous.';
             $this->load->view('templates/Entete', $Catalogue);
             $DonneesEnvoyees['TitreDePage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
             $DonneesEnvoyees['lesProduits'] = $this->ModeleArticle->retournerArticlesParDates($pDate);
-            $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees);
+            $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees, $Catalogue);
             $this->load->view('templates/PiedDePage');            
+        }
+
+        public function AjouterPanier($pNumeroProduit, $pNomProduit, $pPrix, $pQuantiteMax, $pCatalogue)
+        {            
+            if ($pCatalogue == 'non'):
+                $quantite = $this->input->post('txtQuantiteDesiree');
+                $produitAjoute = array(
+                    'id'      => $pNumeroProduit,
+                    'qty'     => $quantite,
+                    'price'   => $pPrix,
+                    'name'    => $pNomProduit,
+                    //'options'  => array('qtyMAx' => $pQuantiteMax),
+                );
+            
+                $this->cart->insert($produitAjoute);
+
+                $this->load->helper('url');
+                redirect('Visiteur/VoirUnProduit/'.$pNumeroProduit);
+            else:
+                $produitAjoute = array(
+                    'id'      => $pNumeroProduit,
+                    'qty'     => 1,
+                    'price'   => $pPrix,
+                    'name'    => $pNomProduit,
+                    //'options'  => array('qtyMAx' => $pQuantiteMax),
+                );
+
+                $this->cart->insert($produitAjoute);
+
+                $this->load->helper('url');
+                redirect('Visiteur/AfficherCatalogue');
+            endif;                         
+        }
+
+        public function VoirPanier()
+        {
+            $this->load->helper('form');
+            $this->load->library('form_validation');
+
+            $Catalogue['Catalogue'] = 'non';
+
+            $this->load->view('templates/Entete', $Catalogue);
+            $this->load->view('Visiteur/Panier');
+            $this->load->view('templates/PiedDePage'); 
+        }
+
+        public function modifierQteMoins($pNoProduit, $pQte)
+        {
+            $DonneesAModifier = array(
+                'rowid' => $pNoProduit,
+                'qty'   => $pQte - 1
+            );
+        
+            $this->cart->update($DonneesAModifier); 
+
+            $this->load->helper('url');
+            redirect('Visiteur/VoirPanier');
+        }
+
+        public function modifierQtePlus($pNoProduit, $pQte)
+        {
+            $DonneesAModifier = array(
+                'rowid' => $pNoProduit,
+                'qty'   => $pQte + 1
+            );
+        
+            $this->cart->update($DonneesAModifier);
+
+            $this->load->helper('url');
+            redirect('Visiteur/VoirPanier');
+        }
+
+        public function ValiderPanier()
+        {
+            $this->load->view('templates/Entete', $Catalogue);
+            $this->load->view('Visiteur/Panier');
+            $this->load->view('templates/PiedDePage');
         }
     }
 ?>

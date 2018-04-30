@@ -24,8 +24,8 @@
             $dateAjout = date('Y-m-d');
 
             $DonneesEnvoyees['TitreDeLaPage'] = 'Ajouter un produit au catalogue';
-            $DonneesEnvoyees['LesMarques'] = $this->ModeleArticle->retournerMarque();
-            $DonneesEnvoyees['LesCategories'] = $this->ModeleArticle->retournerCategorie();
+            $DonneesEnvoyees['LesMarques'] = $this->ModeleArticle->retournerMarques();
+            $DonneesEnvoyees['LesCategories'] = $this->ModeleArticle->retournerCategories();
             
             //regles de validations
             $this->form_validation->set_rules('txtNomProduit', 'required');

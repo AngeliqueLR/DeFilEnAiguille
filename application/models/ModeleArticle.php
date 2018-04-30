@@ -10,13 +10,13 @@
         {
             if($pNoProduit === FALSE)
             {
-                $this->db->select('NOPRODUIT, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS, Promotion');
+                $this->db->select('NOPRODUIT, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS, Promotion, QUANTITEENSTOCK');
                 $requete = $this->db->get('produit');
 
                 return $requete->result_array();
             }
 
-            $this->db->select('LIBELLE, PRIXHT, TAUXTVA, QUANTITEENSTOCK, NOMIMAGE, NOMIMAGEBIS, DETAIL, Promotion');
+            $this->db->select('NOPRODUIT, LIBELLE, PRIXHT, TAUXTVA, QUANTITEENSTOCK, NOMIMAGE, NOMIMAGEBIS, DETAIL, Promotion');
             $requete = $this->db->get_where('produit', array('NOPRODUIT' => $pNoProduit));
 
             return $requete->row_array();
@@ -49,7 +49,7 @@
 
         public function retournerArticlesParCategorie($pCategorieChoisie)
         {
-            $this->db->select('NOPRODUIT, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS');
+            $this->db->select('NOPRODUIT, LIBELLE, QUANTITEENSTOCK, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS');
             $requete = $this->db->get_where('produit', array('NOCATEGORIE' => $pCategorieChoisie));
 
             return $requete->result_array(); 
@@ -57,7 +57,7 @@
 
         public function retournerArticlesParMarque($pMarqueChoisie)
         {
-            $this->db->select('NOPRODUIT, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS');
+            $this->db->select('NOPRODUIT, LIBELLE, QUANTITEENSTOCK, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS');
             $requete = $this->db->get_where('produit', array('NOMARQUE' => $pMarqueChoisie));
 
             return $requete->result_array(); 
@@ -68,13 +68,13 @@
             //$this->db->select('NOPRODUIT, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS');
             if ($pDate == 1):
                 //$requete = $this->db->get_where('produit', array('NOPRODUIT IN (SELECT NOPRODUIT FROM produit WHERE DATEDIFF( NOW(), DATEAJOUT ) < 6)'));
-                $requete = $this->db->query('select NOPRODUIT, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS from produit where NOPRODUIT IN (SELECT NOPRODUIT FROM produit WHERE DATEDIFF( NOW(), DATEAJOUT ) < 6)');
+                $requete = $this->db->query('select NOPRODUIT, QUANTITEENSTOCK, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS from produit where NOPRODUIT IN (SELECT NOPRODUIT FROM produit WHERE DATEDIFF( NOW(), DATEAJOUT ) < 6)');
             elseif ($pDate == 2):
                 //$requete = $this->db->get_where('produit', array('NOPRODUIT IN (SELECT NOPRODUIT FROM produit WHERE DATEDIFF( NOW(), DATEAJOUT ) < 16 and DATEDIFF( NOW( ) , DATEAJOUT ) > 4)'));
-                $requete = $this->db->query('select NOPRODUIT, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS from produit where NOPRODUIT IN (SELECT NOPRODUIT FROM produit WHERE DATEDIFF( NOW(), DATEAJOUT ) < 16 and DATEDIFF( NOW( ) , DATEAJOUT ) > 4)');
+                $requete = $this->db->query('select NOPRODUIT, QUANTITEENSTOCK, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS from produit where NOPRODUIT IN (SELECT NOPRODUIT FROM produit WHERE DATEDIFF( NOW(), DATEAJOUT ) < 16 and DATEDIFF( NOW( ) , DATEAJOUT ) > 4)');
             else :
                 //$requete = $this->db->get_where('produit', array('NOPRODUIT IN (SELECT NOPRODUIT FROM produit WHERE DATEDIFF( NOW(), DATEAJOUT ) > 14)'));
-                $requete = $this->db->query('select NOPRODUIT, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS from produit where NOPRODUIT IN (SELECT NOPRODUIT FROM produit WHERE DATEDIFF( NOW(), DATEAJOUT ) > 14)');
+                $requete = $this->db->query('select NOPRODUIT, QUANTITEENSTOCK, LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, NOMIMAGEBIS from produit where NOPRODUIT IN (SELECT NOPRODUIT FROM produit WHERE DATEDIFF( NOW(), DATEAJOUT ) > 14)');
             endif;
             return $requete->result_array(); 
         }
