@@ -11,7 +11,6 @@
 
     <?php
         $i = 1;
-
         foreach ($this->cart->contents() as $Produit):
             echo form_hidden($i.'[rowid]', $Produit['rowid']);
     ?>
@@ -19,7 +18,7 @@
         <tr>
             <td><?php echo $Produit['name'];?></td>
             <!--<td style="text-align:right"><//?php echo $this->cart->format_number($Produit['price']); ?>€</td>!-->
-            <td><a href = "<?php echo site_url('Visiteur/modifierQteMoins/'.$Produit['rowid'].'/'.$Produit['qty']);?>"><span class = "glyphicon glyphicon-minus-sign"></span></a><?php echo form_input(array('name' => $i.'[qty]', 'value' => $Produit['qty'], 'maxlength' => '3', 'size' => '5')); ?><a href = "<?php echo site_url('Visiteur/modifierQtePlus/'.$Produit['rowid'].'/'.$Produit['qty']);?>"><span class = "glyphicon glyphicon-plus-sign"></a></span></td>
+            <td><a href = "<?php echo site_url('Visiteur/modifierQteMoins/'.$Produit['rowid'].'/'.$Produit['qty']);?>"><span class = "glyphicon glyphicon-minus-sign"></span></a><?php echo form_input(array('name' => $i.'[qty]', 'value' => $Produit['qty'], 'maxlength' => '3', 'size' => '5')); ?><a href = "<?php echo site_url('Visiteur/modifierQtePlus/'.$Produit['rowid'].'/'.$Produit['qty'].'/'.$Produit['option']);?>"><span class = "glyphicon glyphicon-plus-sign"></a></span></td>
             <td style="text-align:right"><?php echo $this->cart->format_number($Produit['subtotal']); ?>€</td>
             <td><a href = "<?php echo site_url('Visiteur/modifierQteMoins/'.$Produit['rowid'].'/1');?>"><span class = "glyphicon glyphicon-remove"></span> Supprimer cet article</a></td>
             <td><button><span class = "glyphicon glyphicon-ok"></span> Valider la commande</button></td>

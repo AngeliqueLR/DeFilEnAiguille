@@ -285,7 +285,7 @@ En espérant que vous trouverez votre bonheur chez nous.';
                     'qty'     => $quantite,
                     'price'   => $pPrix,
                     'name'    => $pNomProduit,
-                    //'options'  => array('qtyMAx' => $pQuantiteMax),
+                    'option'  => $pQuantiteMax,
                 );
             
                 $this->cart->insert($produitAjoute);
@@ -298,7 +298,7 @@ En espérant que vous trouverez votre bonheur chez nous.';
                     'qty'     => 1,
                     'price'   => $pPrix,
                     'name'    => $pNomProduit,
-                    //'options'  => array('qtyMAx' => $pQuantiteMax),
+                    'option'  => $pQuantiteMax,
                 );
 
                 $this->cart->insert($produitAjoute);
@@ -333,14 +333,16 @@ En espérant que vous trouverez votre bonheur chez nous.';
             redirect('Visiteur/VoirPanier');
         }
 
-        public function modifierQtePlus($pNoProduit, $pQte)
+        public function modifierQtePlus($pNoProduit, $pQte, $QteMax)
         {
-            $DonneesAModifier = array(
-                'rowid' => $pNoProduit,
-                'qty'   => $pQte + 1
-            );
-        
-            $this->cart->update($DonneesAModifier);
+            if ($QteMax >= $pQte + 1):
+                $DonneesAModifier = array(
+                    'rowid' => $pNoProduit,
+                    'qty'   => $pQte + 1
+                );
+            
+                $this->cart->update($DonneesAModifier);
+            endif;            
 
             $this->load->helper('url');
             redirect('Visiteur/VoirPanier');
