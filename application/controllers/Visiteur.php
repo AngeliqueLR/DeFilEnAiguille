@@ -279,12 +279,13 @@ En espérant que vous trouverez votre bonheur chez nous.';
         public function AjouterPanier($pNumeroProduit, $pNomProduit, $pPrix, $pQuantiteMax, $pCatalogue)
         {            
             if ($pCatalogue == 'non'):
+                $NomProduit = implode($this->ModeleArticle->NomProduit($pNumeroProduit));
                 $quantite = $this->input->post('txtQuantiteDesiree');
                 $produitAjoute = array(
                     'id'      => $pNumeroProduit,
                     'qty'     => $quantite,
                     'price'   => $pPrix,
-                    'name'    => $pNomProduit,
+                    'name'    => $NomProduit,
                     'option'  => $pQuantiteMax,
                 );
             
@@ -293,15 +294,19 @@ En espérant que vous trouverez votre bonheur chez nous.';
                 $this->load->helper('url');
                 redirect('Visiteur/VoirUnProduit/'.$pNumeroProduit);
             else:
-                $produitAjoute = array(
-                    'id'      => $pNumeroProduit,
-                    'qty'     => 1,
-                    'price'   => $pPrix,
-                    'name'    => $pNomProduit,
-                    'option'  => $pQuantiteMax,
-                );
-
-                $this->cart->insert($produitAjoute);
+                if ($this->ModeleArticle->EstDansPanier($pNumeroProduit) == 'faux')
+                {
+                    $NomProduit = implode($this->ModeleArticle->NomProduit($pNumeroProduit));
+                    $produitAjoute = array(
+                        'id'      => $pNumeroProduit,
+                        'qty'     => 1,
+                        'price'   => $pPrix,
+                        'name'    => $NomProduit,
+                        'option'  => $pQuantiteMax,
+                    );
+    
+                    $this->cart->insert($produitAjoute);
+                }               
 
                 $this->load->helper('url');
                 redirect('Visiteur/AfficherCatalogue');
@@ -346,13 +351,6 @@ En espérant que vous trouverez votre bonheur chez nous.';
 
             $this->load->helper('url');
             redirect('Visiteur/VoirPanier');
-        }
-
-        public function ValiderPanier()
-        {
-            $this->load->view('templates/Entete', $Catalogue);
-            $this->load->view('Visiteur/Panier');
-            $this->load->view('templates/PiedDePage');
         }
     }
 ?>

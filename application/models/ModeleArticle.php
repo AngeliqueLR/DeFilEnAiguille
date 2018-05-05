@@ -94,5 +94,47 @@
 
             return $requete->result_array(); 
         }
+
+        public function EstDansPanier($pNoProduit)
+        {
+            foreach ($this->cart->contents() as $Produit):
+                if ($Produit['id'] == $pNoProduit):
+                    return 'vrai';
+                endif;
+            endforeach;
+
+            return 'faux';
+        }
+
+        public function retournerIdDerniereCommande()
+        {
+            $requete = $this->db->query('select MAX(NOCOMMANDE) from commande');
+            return $requete->row_array();
+        }
+
+        public function AjoutCommande($pDonneesAInserer)
+        {
+            return $this->db->insert('COMMANDE', $pDonneesAInserer);
+        }
+
+        public function AjoutLigne($pDonneesAInserer)
+        {
+            return $this->db->insert('LIGNE', $pDonneesAInserer);
+        }
+
+        public function ModificationQte($pDonneesAModifier, $pNoProduit)
+        {
+            $this->db->set($pDonneesAModifier);
+            $this->db->where('NOPRODUIT', $pNoProduit);
+            return $this->db->update('PRODUIT');
+        }
+
+        public function NomProduit($pNoProduit)
+        {
+            $this->db->select('LIBELLE');
+            $requete = $this->db->get_where('produit', 'NOPRODUIT ='.$pNoProduit);
+            
+            return $requete->row_array();
+        }
     }
 ?>

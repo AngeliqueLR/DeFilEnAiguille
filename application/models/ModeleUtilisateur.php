@@ -31,5 +31,20 @@
         {
             return $this->db->insert('CLIENT', $DonneesClient);
         }
+
+        public function retournerNumeroUtilisateur($pUtilisateur)
+        {
+            $this->db->select('NOCLIENT');
+            $requete = $this->db->get_where('client', 'EMAIL like \''.$pUtilisateur.'\'');
+            
+            return $requete->row_array();
+        }
+
+        public function retournerInfoUtilisateur($pUtilisateur)
+        {
+            $this->db->select('NOM, PRENOM, ADRESSE, CODEPOSTAL, VILLE');
+            $requete = $this->db->get_where('CLIENT',$pUtilisateur);
+            return $requete->row_array();
+        }
     }
 ?>

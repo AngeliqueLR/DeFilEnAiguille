@@ -68,7 +68,6 @@
                             <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUnProduit') ?>">Ajouter un produit</a></li>&nbsp;&nbsp;
                         <?php endif; ?>    
                         <li class="active"><a href="<?php echo site_url('Visiteur/AfficherCatalogue') ?>">Catalogue</a></li>&nbsp;&nbsp;
-                        <li class="active"><a href="<?php echo site_url('Visiteur/listerLesArticlesAvecPagination') ?>">Catalogue (par 3)</a></li>&nbsp;&nbsp;
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <?php if ($this->session->statut=='Client' or is_null($this->session->statut)) : ?>
@@ -95,6 +94,9 @@
                     <div class="well">
                         <p>De Fil en Aiguille</p>
                         <img src="<?php echo img_url('LOGO.jpg');?>" class="img-circle" height="65" width="65" alt="Avatar">
+                    </div>
+                    <div class="well">
+                        <ul><a href="<?php echo site_url('Visiteur/listerLesArticlesAvecPagination') ?>">• Catalogue (par 3) •</a></ul>
                     </div>
                     <div class="well">
                         <ul>• Categories •

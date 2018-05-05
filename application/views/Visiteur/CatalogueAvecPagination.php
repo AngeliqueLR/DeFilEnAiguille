@@ -9,10 +9,14 @@
                 echo '<div class="col-sm-4">';
                 $prix = $unProduit['PRIXHT'] + ($unProduit['PRIXHT'] * $unProduit['TAUXTVA'] / 100);
                 echo '<p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], $unProduit['LIBELLE']).'</p><p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], $prix.' €').'</p><p>';
-                if ($unProduit['QUANTITEENSTOCK'] != 0) : 
-                    echo anchor('Visiteur/AjouterPanier/'.$unProduit['NOPRODUIT'].'/'.$unProduit['LIBELLE'].'/'.$prix.'/'.$unProduit['QUANTITEENSTOCK'].'/'.$Catalogue, '<span class="glyphicon glyphicon-shopping-cart"></span>'); 
+                if ($this->session->statut=='Administrateur'):
+                    echo anchor('Administrateur/ModifierProduit/'.$unProduit['NOPRODUIT'], 'Modifier ce produit'); 
                 else:
-                    echo '<span class="glyphicon glyphicon-bell"></span>';
+                    if ($unProduit['QUANTITEENSTOCK'] != 0) : 
+                        echo anchor('Visiteur/AjouterPanier/'.$unProduit['NOPRODUIT'].'/'.$unProduit['LIBELLE'].'/'.$prix.'/'.$unProduit['QUANTITEENSTOCK'].'/'.$Catalogue, '<span class="glyphicon glyphicon-shopping-cart"></span>'); 
+                    else:
+                        echo '<span class="glyphicon glyphicon-bell"></span>';
+                    endif;
                 endif;
                 echo '</p><p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], img_onmouseover($unProduit['NOMIMAGE'], $unProduit['NOMIMAGEBIS'])).'</p>';
                 echo '</div>';
