@@ -158,10 +158,10 @@
                         $this->email->subject('Bienvenu sur notre site');
                         $message = 'Bonjour '. $this->input->post('txtPrenom').' '.$this->input->post('txtNom').', 
 Nous vous confirmons votre inscription sur notre site "De fil en aiguille". 
-        Votre identifiant est : '.$Utilisateur['EMAIL'].'. 
-        Votre mot de passe : '.$this->input->post('txtMotDePasse').'. 
+        • Votre identifiant est : '.$Utilisateur['EMAIL'].'. 
+        • Votre mot de passe : '.$this->input->post('txtMotDePasse').'. 
 
-En espérant que vous trouverez votre bonheur chez nous.';
+En espérant que vous trouverez votre bonheur chez nous.☺';
                         $this->email->message($message);	
 
                         if (!$this->email->send())

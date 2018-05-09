@@ -17,7 +17,7 @@
         }
 
         
-        public function ValiderPanier($pNoProduit = NULL, $pQte = NULL)
+        public function ValiderPanier($pNoProduit = NULL, $pQte = NULL, $pQteMax = NULL, $pRowid = NULL)
         {
             $this->load->helper('form');
             $this->load->library('form_validation');
@@ -52,35 +52,45 @@
                     $numCommande = implode($this->ModeleArticle->retournerIdDerniereCommande());
                     foreach ($this->cart->contents() as $Produit):
                         $DonneesInserer = array('NOCOMMANDE' => $numCommande, 'NOPRODUIT' => $Produit['id'], 'QUANTITECOMMANDEE' => $Produit['qty']);
-                        $QteAModifier = 2; //'QUANTITEENSTOCK - '. $Produit['qty'];
+                        $QteAModifier = $Produit['option'] - $Produit['qty'];
                         $DonneesAModifier = array('QUANTITEENSTOCK' => $QteAModifier);
                         $this->ModeleArticle->AjoutLigne($DonneesInserer);
                         $this->ModeleArticle->ModificationQte($DonneesAModifier, $Produit['id']);
                     endforeach;
 
                     $this->email->from('lerouxangelique.alr@gmail.com', 'De fil en aiguille');
-                    //$this->email->to($Utilisateur['EMAIL']); 
-                    $this->email->to('angelique.le-roux@gmx.fr');
+                    $this->email->to($this->session->identifiant); 
+                    //$this->email->to('angelique.le-roux@gmx.fr');
                     $this->email->subject('Merci de votre commande!');
-                    $message = 'Bonjour '. $this->session->prenom.' '.$this->session->nom.', 
-Nous vous confirmons l\'enregistrement de votre commande sur notre site "De fil en aiguille". 
-    
-Les produits que vous avez commandez sont : 
+                    $message = 'Bonjour '. $this->session->prenom.' '.$this->session->nom.',
+Nous vous confirmons que votre commande a bien été prise en compte.
 
-';
-foreach ($this->cart->contents() as $Produit):
-    $message = $message + $Produit['name'].' en '.$Produit['qty'].' exemplaire(s).
-    
-    ';
-endforeach;
+L\'adresse de facturation est la suivante : 
+        • '.implode("
+        ", $this->ModeleUtilisateur->retournerInfoUtilisateur('EMAIL like  \''.$this->session->identifiant.'\'')).'
 
-$message = $message + 'Merci de votre confiance et à bientôt.';
-                        $this->email->message($message);	
+L\'adresse de livraison est : 
+        • '.$this->input->post('txtNom').'
+          '.$this->input->post('txtPrenom').'
+          '.$this->input->post('txtAdresse').'
+          '.$this->input->post('txtCodePostal').'
+          '.$this->input->post('txtVille').'
+          
+Les produits que vous avez commandés sont : 
+    '.implode('
+    ', $this->ModeleArticle->retournerLesProduits()).'
 
-                        if (!$this->email->send())
-                        {
-                            $this->email->print_debugger();
-                        }
+Le total de votre commande s\'élève à '.$this->cart->format_number($this->cart->total()).'€
+
+Merci de votre confiance.
+A bientôt!☺';
+        $this->email->message($message);	
+
+                    if (!$this->email->send())
+                    {
+                        $this->email->print_debugger();
+                    }
+                    $this->cart->destroy();
                 }            
                 else
                 {
@@ -88,29 +98,43 @@ $message = $message + 'Merci de votre confiance et à bientôt.';
                     $this->ModeleArticle->AjoutCommande($DonneesAInserer);
                     $numCommande = implode($this->ModeleArticle->retournerIdDerniereCommande());
                     $DonneesInserer = array('NOCOMMANDE' => $numCommande, 'NOPRODUIT' => $pNoProduit, 'QUANTITE' => $pQte);
-                    $QteAModifier = 2; //'QUANTITEENSTOCK - '. $Produit['qty'];
+                    $QteAModifier = $pQteMax - $pQte;
                     $DonneesAModifier = array('QUANTITEENSTOCK' => $QteAModifier);
                     $this->ModeleArticle->AjoutLigne($DonneesInserer);
                     $this->ModeleArticle->ModificationQte($DonneesAModifier, $pNoProduit);
 
                     $this->email->from('lerouxangelique.alr@gmail.com', 'De fil en aiguille');
-                    //$this->email->to($Utilisateur['EMAIL']); 
-                    $this->email->to('angelique.le-roux@gmx.fr');
+                    $this->email->to($this->session->identifiant); 
+                    //$this->email->to('angelique.le-roux@gmx.fr');
                     $this->email->subject('Merci de votre commande!');
-                    $message = 'Bonjour '. $this->session->prenom.' '.$this->session->nom.', 
-Nous vous confirmons l\'enregistrement de votre commande sur notre site "De fil en aiguille". 
-    
-Vous avez commandez :
+                    $message = 'Bonjour '. $this->session->prenom.' '.$this->session->nom.',
+Nous vous confirmons que votre commande a bien été prise en compte.
 
-'.implode($this->ModeleArticle->NomProduit).' en '.$pQte.' exemplaire(s).
+L\'adresse de facturation est la suivante : 
+        • '.implode("
+        ", $this->ModeleUtilisateur->retournerInfoUtilisateur('EMAIL like  \''.$this->session->identifiant.'\'')).'
 
-Merci de votre confiance et à bientôt.';
-                        $this->email->message($message);	
+L\'adresse de livraison est : 
+        • '.$this->input->post('txtNom').'
+          '.$this->input->post('txtPrenom').'
+          '.$this->input->post('txtAdresse').'
+          '.$this->input->post('txtCodePostal').'
+          '.$this->input->post('txtVille').'
+          
+Vous avez commandé :
+        → '.implode($this->ModeleArticle->NomProduit($pNoProduit)).' au prix de '.implode($this->ModeleArticle->PrixProduit($pNoProduit)).'€ en '.$pQte.' exemplaire(s).
 
-                        if (!$this->email->send())
-                        {
-                            $this->email->print_debugger();
-                        }
+Le total de votre commande s\'élève à '.implode($this->ModeleArticle->PrixProduit($pNoProduit))*$Qte.'€
+
+Merci de votre confiance.
+A bientôt!☺';
+                    $this->email->message($message);	
+
+                    if (!$this->email->send())
+                    {
+                        $this->email->print_debugger();
+                    }
+                    $this->Visiteur->modifierQteMoins($pRowid, 1);
                 }
                          
                 $this->load->helper('url');

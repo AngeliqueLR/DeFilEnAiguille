@@ -136,5 +136,22 @@
             
             return $requete->row_array();
         }
+
+        public function PrixProduit($pNoProduit)
+        {
+            $this->db->select('PRIXHT + ( PRIXHT * TAUXTVA /100 )');
+            $requete = $this->db->get_where('produit', 'NOPRODUIT ='.$pNoProduit);
+            
+            return $requete->row_array();
+        }
+
+        public function retournerLesProduits()
+        {
+            foreach ($this->cart->contents() as $Produit):
+                $produits[] = '→ '.$Produit['name'].' au prix de '.$Produit['price'].'€ en '.$Produit['qty'].' exemplaire(s).'; 
+            endforeach;
+
+            return $produits;
+        }
     }
 ?>
