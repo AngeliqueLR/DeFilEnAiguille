@@ -5,9 +5,11 @@
         {
             parent::__construct();
             $this->load->model('ModeleArticle');
+            $this->load->model('ModeleUtilisateur');
+            $this->load->library('email');
 
             $this->load->library('session');
-            if ($this->session->statut=='Client')
+            if ($this->session->statut=='Client'or is_null($this->session->statut))
             {
                 $this->load->helper('url');
                 redirect('/Visiteur/seConnecter');
@@ -118,7 +120,7 @@
             }
         }
 
-        public function ModifierProduit($pNoProduit)
+        public function ModifierProduit($pNoProduit, $pQte)
         {
             $Catalogue['Catalogue'] = 'non';
 
@@ -129,7 +131,10 @@
             $DonneesEnvoyees['LesMarques'] = $this->ModeleArticle->retournerMarques();
             $DonneesEnvoyees['LesCategories'] = $this->ModeleArticle->retournerCategories();
             $DonneesEnvoyees['NoProduit'] = $pNoProduit;
-            
+            $DonneesEnvoyees['Qte'] = $pQte;
+            $DonneesEnvoyees['InfoProduits'] = $this->ModeleArticle->retournerProduit($pNoProduit);
+            $DonneesEnvoyees['MarqueCategorie'] = $this->ModeleArticle->MarqueCategorie($pNoProduit);
+
             //regles de validations
             $this->form_validation->set_rules('txtNomProduit', 'required');
             $this->form_validation->set_rules('txtPrixProduit', 'required');
@@ -145,6 +150,27 @@
 
             if ($this->input->post('submit'))
             {
+                if($pQte == 0)
+                {
+                    $EMail = $this->ModeleUtilisateur->retournerEMails($pNoProduit);
+                    foreach ($EMail as $Mail):
+                        $this->email->from('lerouxangelique.alr@gmail.com', 'De fil en aiguille');
+                        $this->email->to($Mail['EMAIL']); 
+                        //$this->email->to('angelique.le-roux@gmx.fr');
+                        $this->email->subject('Information remise en stock');
+                        $message = 'Bonjour '.implode(" ", $this->ModeleUtilisateur->retournerNomPrenom($Mail['EMAIL'])).', 
+Nous vous informons que le produit '.implode($this->ModeleArticle->NomProduit($pNoProduit)).' a bien été remis en stock. 
+
+Venez vite le commander.☺';
+                        $this->email->message($message);	
+
+                        if (!$this->email->send())
+                        {
+                            $this->email->print_debugger();
+                        }
+                    endforeach;
+                    $this->ModeleArticle->SupprimerAlerter($pNoProduit);
+                }
                 $DonneesAModifier = array('NOCATEGORIE' => $this->input->post('txtCategorieProduit'), 'NOMARQUE' => $this->input->post('txtMarqueProduit'), 
                 'LIBELLE' => $this->input->post('txtNomProduit'), 'DETAIL' => $this->input->post('txtDetailsProduit'),
                 'PRIXHT' => $this->input->post('txtPrixProduit'), 'TAUXTVA' => $this->input->post('txtTVAProduit'),
@@ -153,7 +179,7 @@
 
                 $this->ModeleArticle->ModifierProduit($DonneesAModifier, $pNoProduit);
                 $this->load->helper('url');
-                redirect('/Administrateur/ModifierProduit/'.$pNoProduit);
+                redirect('/Administrateur/ModifierProduit/'.$pNoProduit.'/'.$pQte);
             }
             else 
             {                
@@ -162,6 +188,54 @@
                 $this->load->view('Administrateur/ModifierProduit', $DonneesEnvoyees);
                 $this->load->view('templates/PiedDePage');        
             }  
+        }
+
+        public function voirClients()
+        {
+            $DonneesAEnvoyer['InfoClients'] = $this->ModeleUtilisateur->retournerInfoClients();
+            $Catalogue['Catalogue'] = 'non';
+
+            $this->load->view('templates/Entete', $Catalogue);
+            $this->load->view('Administrateur/VoirClients', $DonneesAEnvoyer);
+            $this->load->view('templates/PiedDePage');
+        }
+
+        public function VoirLesCommandes($pNoClient = NULL)
+        {
+            $DonneesAEnvoyer['NoClient'] = $pNoClient;
+            $Catalogue['Catalogue'] = 'non';
+            if ($pNoClient != NULL):
+                $DonneesAEnvoyer['NomPrenom'] = $this->ModeleUtilisateur->retournerNomPrenom(implode($this->ModeleUtilisateur->retournerIdentifiant($pNoClient)));
+            endif;
+
+            $this->load->view('templates/Entete', $Catalogue);
+            $this->load->view('Administrateur/VoirLesCommandes', $DonneesAEnvoyer);
+            $this->load->view('templates/PiedDePage');
+        }
+
+        public function CommandesNonTraitees($pNoClient = NULL)
+        {
+            $DonneesAEnvoyer['NoClient'] = $pNoClient;
+            $Catalogue['Catalogue'] = 'non';
+            $Commandes = $this->ModeleUtilisateur->retournerNoCommandesNonTraitees($pNoClient);  
+            if ($pNoClient != NULL):
+                $DonneesAEnvoyer['NomPrenom'] = $this->ModeleUtilisateur->retournerNomPrenom(implode($this->ModeleUtilisateur->retournerIdentifiant($pNoClient)));
+            endif; 
+            if ($Commandes != NULL)
+            {
+                foreach ($Commandes as $UneCommande) 
+                {
+                    $ProduitsDuneCommande[] = $this->ModeleUtilisateur->CommandesEnAttentes($pNoClient, implode($UneCommande));
+                }
+                $DonneesAEnvoyer['lesCommandes'] = $ProduitsDuneCommande;
+            }
+            else
+            {
+                $DonneesAEnvoyer['lesCommandes'] = NULL;
+            }
+            $this->load->view('templates/Entete', $Catalogue);
+            $this->load->view('Administrateur/CommandesNonTraitees', $DonneesAEnvoyer);
+            $this->load->view('templates/PiedDePage');
         }
     }
 ?>

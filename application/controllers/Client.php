@@ -45,7 +45,7 @@
             }
             else
             {
-                if ($pNoProduit == NULL)
+                if ($pNoProduit === NULL)
                 {
                     $DonneesAInserer = array('NOCLIENT' => $NoClient, 'DATECOMMANDE' => date('y-m-d'), 'ETAT' => '0');
                     $this->ModeleArticle->AjoutCommande($DonneesAInserer);
@@ -140,6 +140,14 @@ A bientôt!☺';
                 $this->load->helper('url');
                 redirect('Visiteur/AfficherCatalogue');
             }
+        }
+
+        public function Alerter($pNoProduit)
+        {
+            $this->ModeleArticle->Alerter($pNoProduit, $this->session->identifiant);
+
+            $this->load->helper('url');
+            redirect('Visiteur/AfficherCatalogue');
         }
     }
 ?>

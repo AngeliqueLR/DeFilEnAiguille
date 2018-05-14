@@ -2,39 +2,39 @@
     <h2><?php echo $TitreDeLaPage ?></h2>
     <?php 
         echo validation_errors();
-        echo form_open('Administrateur/ModifierProduit/'.$NoProduit) 
+        echo form_open('Administrateur/ModifierProduit/'.$NoProduit.'/'.$Qte) 
     ?>
         <label for="txtNomProduit">Nom du produit</label>
-            <input type="input" name="txtNomProduit" value="<?php echo set_value('txtNomProduit'); ?>" /><br/>
+            <input type="input" name="txtNomProduit" value="<?php echo $InfoProduits['LIBELLE']; ?>" /><br/>
 
         <label for="txtDetailsProduit">Détails de l'article</label>
-            <textarea name="txtDetailsProduit" value="<?php echo set_value('txtDetailsProduit'); ?>"></textarea><br/>
+            <textarea name="txtDetailsProduit"><?php echo $InfoProduits['DETAIL']; ?></textarea><br/>
 
         <label for="txtPrixProduit">Prix HT du produit</label>
-            <input type="input" name="txtPrixProduit" value="<?php echo set_value('txtPrixProduit'); ?>" /><br/>
+            <input type="input" name="txtPrixProduit" value="<?php echo $InfoProduits['PRIXHT']; ?>" /><br/>
         
         <label for="txtTVAProduit">Taux TVA du produit (en %)</label>
-            <input type="input" name="txtTVAProduit" value="<?php echo set_value('txtTVAProduit'); ?>" /><br/>
+            <input type="input" name="txtTVAProduit" value="<?php echo $InfoProduits['TAUXTVA']; ?>" /><br/>
 
         <label for="txtPromotion">Taux de promotion (en %)</label>
-            <input type="input" name="txtPromotion" value="<?php echo set_value('txtPromotion'); ?>" /><br/>
+            <input type="input" name="txtPromotion" value="<?php echo $InfoProduits['Promotion']; ?>" /><br/>
 
         <label for="txtPhotoProduit">Première photo du produit</label>
-            <input type="input" name="txtPhotoProduit" value="<?php echo set_value('txtPhotoProduit'); ?>" /><br/>
+            <input type="input" name="txtPhotoProduit" value="<?php echo $InfoProduits['NOMIMAGE']; ?>" /><br/>
 
         <label for="txtPhotoBisProduit">Deuxième photo du produit</label>
-            <input type="input" name="txtPhotoBisProduit" value="<?php echo set_value('txtPhotoBisProduit'); ?>" /><br/>
+            <input type="input" name="txtPhotoBisProduit" value="<?php echo $InfoProduits['NOMIMAGEBIS']; ?>" /><br/>
 
         <label for="txtQuantiteProduit">Quantité en stock</label>
-            <input type="input" name="txtQuantiteProduit" value="<?php echo set_value('txtQuantiteProduit'); ?>" /><br/>
+            <input type="input" name="txtQuantiteProduit" value="<?php echo $InfoProduits['QUANTITEENSTOCK']; ?>" /><br/>
 
         <label for="txtMarqueProduit">Marque du produit</label>
-            <select name="txtMarqueProduit" value="<?php echo set_value('txtMarqueProduit'); ?>" >
+            <select name="txtMarqueProduit" value="<?php echo $MarqueCategorie['NOM']; ?>" >
                 <?php foreach ($LesMarques as $UneMarque): echo '<option value = "'.$UneMarque['NOMARQUE'].'">'.$UneMarque['NOM'].'</option>'; endforeach ?>
             </select><br/>
 
         <label for="txtCategorieProduit">Catégorie du produit</label>
-            <select name="txtCategorieProduit" value="<?php echo set_value('txtCategorieProduit'); ?>" >
+            <select name="txtCategorieProduit" value="<?php echo $MarqueCategorie['LIBELLE']; ?>" >
                 <?php foreach ($LesCategories as $UneCategorie): echo '<option value = "'.$UneCategorie['NOCATEGORIE'].'">'.$UneCategorie['LIBELLE'].'</option>'; endforeach ?>
             </select><br/>
 

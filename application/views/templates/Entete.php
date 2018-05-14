@@ -68,6 +68,7 @@
                             <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUnProduit') ?>">Ajouter un produit</a></li>&nbsp;&nbsp;
                             <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUneMarque') ?>">Ajouter une marque</a></li>&nbsp;&nbsp;
                             <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUneCategorie') ?>">Ajouter une catégorie</a></li>&nbsp;&nbsp;
+                            <li class="active"><a href="<?php echo site_url('Administrateur/voirClients') ?>">Voir les clients</a></li>&nbsp;&nbsp;    
                         <?php endif; ?>    
                         <li class="active"><a href="<?php echo site_url('Visiteur/AfficherCatalogue') ?>">Catalogue</a></li>&nbsp;&nbsp;
                     </ul>

@@ -170,5 +170,30 @@
             $this->db->where('NOPRODUIT', $pNoProduit);
             return $this->db->update('PRODUIT');
         }
+
+        public function CompterAlerter($pNoProduit, $pEMail)
+        {
+            $requete = $this->db->query('select count(*) from alerter where NOPRODUIT = '.$pNoProduit.' and NOCLIENT = '.implode($this->ModeleUtilisateur->retournerNumeroUtilisateur($pEMail)));
+            return $requete->result_array();
+        }
+
+        public function Alerter($pNoProduit, $pEMail)
+        {
+            if (implode($this->ModeleArticle->CompterAlerter($pNoProduit, $pEMail)) == 0):
+                $DonneesAInserer = (array('NOCLIENT' => implode($this->ModeleUtilisateur->retournerNumeroUtilisateur($pEMail)), 'NOPRODUIT' => $pNoProduit));
+                return $this->db->insert('alerter', $DonneesAInserer);
+            endif;
+        }
+
+        public function MarqueCategorie($pNoProduit)
+        {
+           $requete = $this->db->query('SELECT categorie.LIBELLE, marque.NOM FROM marque, produit, categorie WHERE marque.NOMARQUE = produit.NOMARQUE AND categorie.NOCATEGORIE = produit.NOCATEGORIE AND NOPRODUIT = '.$pNoProduit);
+           return $requete->row_array();
+        }
+
+        public function SupprimerAlerter($pNoProduit)
+        {
+            return $this->db->delete('Alerter', array('NOPRODUIT' => $pNoProduit));
+        }
     }
 ?>

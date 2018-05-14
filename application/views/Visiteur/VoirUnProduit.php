@@ -15,7 +15,7 @@
         <div class="panel-body">
           <?php 
             if ($this->session->statut=='Administrateur'):
-              echo anchor('Administrateur/ModifierProduit/'.$unProduit['NOPRODUIT'], 'Modifier cet article');
+              echo anchor('Administrateur/ModifierProduit/'.$unProduit['NOPRODUIT'].'/'.$unProduit['QUANTITEENSTOCK'], 'Modifier cet article');
             else:
               if ($unProduit['QUANTITEENSTOCK'] == 0):
                 echo anchor('Visiteur/Alerter/'.$unProduit['NOPRODUIT'], '<span class=\'glyphicon glyphicon-bell\'></span> M\'alerter à la remise en stock');

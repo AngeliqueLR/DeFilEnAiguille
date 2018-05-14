@@ -18,12 +18,12 @@
                     echo '<p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], $unProduit['LIBELLE']).'</p><p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], $prix.' €').' | '.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], '<span class="glyphicon glyphicon-tag"></span> -'.$unProduit['Promotion'].'%').'</p><p>';
                 }
                 if ($this->session->statut=='Administrateur'):
-                    echo anchor('Administrateur/ModifierProduit/'.$unProduit['NOPRODUIT'], 'Modifier ce produit'); 
+                    echo anchor('Administrateur/ModifierProduit/'.$unProduit['NOPRODUIT'].'/'.$unProduit['QUANTITEENSTOCK'], 'Modifier ce produit'); 
                 else:
                     if ($unProduit['QUANTITEENSTOCK'] != 0) : 
                         echo anchor('Visiteur/AjouterPanier/'.$unProduit['NOPRODUIT'].'/'.$unProduit['LIBELLE'].'/'.$prix.'/'.$unProduit['QUANTITEENSTOCK'].'/'.$Catalogue, '<span class="glyphicon glyphicon-shopping-cart"></span>'); 
                     else:
-                        echo '<span class="glyphicon glyphicon-bell"></span>';
+                        echo anchor('Client/Alerter/'.$unProduit['NOPRODUIT'], '<span class="glyphicon glyphicon-bell"></span>');
                     endif;
                 endif;
                 echo '</p><p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], img_onmouseover($unProduit['NOMIMAGE'], $unProduit['NOMIMAGEBIS'])).'</p>';
