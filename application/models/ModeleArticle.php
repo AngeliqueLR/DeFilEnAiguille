@@ -195,5 +195,18 @@
         {
             return $this->db->delete('Alerter', array('NOPRODUIT' => $pNoProduit));
         }
+
+        public function ValiderCommande($pDonneesAModifier, $pNoCommande)
+        {
+            $this->db->set($pDonneesAModifier);
+            $this->db->where('NOCOMMANDE', $pNoCommande);
+            return $this->db->update('COMMANDE');
+        }
+
+        public function afficherRecherche($pRechercher)
+        {
+            $requete = $this->db->query('select distinct(produit.NOPRODUIT), QUANTITEENSTOCK, produit.LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, Promotion, NOMIMAGEBIS from produit, marque, categorie where (produit.NOMARQUE = marque.NOMARQUE and marque.NOM like \'%'.$pRechercher.'%\') or (produit.NOCATEGORIE = categorie.NOCATEGORIE and categorie.LIBELLE like \'%'.$pRechercher.'%\') or produit.LIBELLE like \'%'.$pRechercher.'%\'' );
+            return $requete->result_array();
+        }
     }
 ?>

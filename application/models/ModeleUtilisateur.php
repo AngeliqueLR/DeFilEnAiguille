@@ -101,7 +101,39 @@
             }
             else 
             {
-                $this->db->select('LIBELLE, QUANTITECOMMANDEE, client.NOCLIENT, commande.NOCOMMANDE');
+                $this->db->select('NOM, PRENOM, ADRESSE, CODEPOSTAL, VILLE, EMAIL, LIBELLE, QUANTITECOMMANDEE, client.NOCLIENT, commande.NOCOMMANDE');
+                $requete = $this->db->get_where('ligne, produit, commande, client', 'produit.NOPRODUIT = ligne.NOPRODUIT and ligne.NOCOMMANDE = commande.NOCOMMANDE and commande.NOCOMMANDE = '.$pNoCommande.' and client.NOCLIENT = commande.NOCLIENT');
+                return $requete->result_array(); 
+            }
+        }
+
+        public function retournerHistoriqueCommandes($pNoClient = NULL)
+        {
+            if ($pNoClient != NULL)
+            {
+                $this->db->select('NOCOMMANDE');
+                $requete = $this->db->get_where('commande', array('NOCLIENT' => $pNoClient, 'Etat' => '1'));
+                return $requete->result_array();
+            }
+            else 
+            {
+                $this->db->select('NOCOMMANDE');
+                $requete = $this->db->get_where('commande', array('Etat' => '1'));
+                return $requete->result_array();
+            }
+        }
+
+        public function CommandesTraitees($pNoClient = NULL, $pNoCommande)
+        {
+            if ($pNoClient != NULL)
+            {
+                $this->db->select('LIBELLE, QUANTITECOMMANDEE, commande.NOCOMMANDE');
+                $requete = $this->db->get_where('ligne, produit, commande', 'produit.NOPRODUIT = ligne.NOPRODUIT and ligne.NOCOMMANDE = commande.NOCOMMANDE and NOCLIENT = '.$pNoClient.' and commande.NOCOMMANDE = '.$pNoCommande);
+                return $requete->result_array();
+            }
+            else 
+            {
+                $this->db->select('NOM, PRENOM, ADRESSE, CODEPOSTAL, VILLE, EMAIL, LIBELLE, QUANTITECOMMANDEE, client.NOCLIENT, commande.NOCOMMANDE');
                 $requete = $this->db->get_where('ligne, produit, commande, client', 'produit.NOPRODUIT = ligne.NOPRODUIT and ligne.NOCOMMANDE = commande.NOCOMMANDE and commande.NOCOMMANDE = '.$pNoCommande.' and client.NOCLIENT = commande.NOCLIENT');
                 return $requete->result_array(); 
             }

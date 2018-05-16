@@ -352,5 +352,19 @@ En espérant que vous trouverez votre bonheur chez nous.☺';
             $this->load->helper('url');
             redirect('Visiteur/VoirPanier');
         }
+
+        public function afficherRecherche()
+        {
+            $Catalogue['Catalogue'] = 'oui';
+            $Rechercher = $this->input->post('txtRechercher');
+            $Catalogue['lesCategories'] = $this->ModeleArticle->retournerCategories();
+            $Catalogue['lesMarques'] = $this->ModeleArticle->retournerMarques();
+            
+            $this->load->view('templates/Entete', $Catalogue);
+            $DonneesEnvoyees['TitreDePage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
+            $DonneesEnvoyees['lesProduits'] = $this->ModeleArticle->afficherRecherche($Rechercher);
+            $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees, $Catalogue);
+            $this->load->view('templates/PiedDePage');            
+        }
     }
 ?>

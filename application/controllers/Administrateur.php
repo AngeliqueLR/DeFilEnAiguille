@@ -217,7 +217,8 @@ Venez vite le commander.☺';
         {
             $DonneesAEnvoyer['NoClient'] = $pNoClient;
             $Catalogue['Catalogue'] = 'non';
-            $Commandes = $this->ModeleUtilisateur->retournerNoCommandesNonTraitees($pNoClient);  
+            $Commandes = $this->ModeleUtilisateur->retournerNoCommandesNonTraitees($pNoClient); 
+            //le numéro commande peut être égal à NULL et donc retourne les commandes passées par tous les utilisateurs
             if ($pNoClient != NULL):
                 $DonneesAEnvoyer['NomPrenom'] = $this->ModeleUtilisateur->retournerNomPrenom(implode($this->ModeleUtilisateur->retournerIdentifiant($pNoClient)));
             endif; 
@@ -228,14 +229,52 @@ Venez vite le commander.☺';
                     $ProduitsDuneCommande[] = $this->ModeleUtilisateur->CommandesEnAttentes($pNoClient, implode($UneCommande));
                 }
                 $DonneesAEnvoyer['lesCommandes'] = $ProduitsDuneCommande;
+                //retourne le libelle, la quantite commandee et le numero de la commande
             }
             else
             {
                 $DonneesAEnvoyer['lesCommandes'] = NULL;
+                //ne renvoie rien
             }
             $this->load->view('templates/Entete', $Catalogue);
             $this->load->view('Administrateur/CommandesNonTraitees', $DonneesAEnvoyer);
             $this->load->view('templates/PiedDePage');
+        }
+
+        public function HistoriqueCommandes($pNoClient = NULL)
+        {
+            $DonneesAEnvoyer['NoClient'] = $pNoClient;
+            $Catalogue['Catalogue'] = 'non';
+            $Commandes = $this->ModeleUtilisateur->retournerHistoriqueCommandes($pNoClient); 
+            //le numéro commande peut être égal à NULL et donc retourne les commandes passées par tous les utilisateurs
+            if ($pNoClient != NULL):
+                $DonneesAEnvoyer['NomPrenom'] = $this->ModeleUtilisateur->retournerNomPrenom(implode($this->ModeleUtilisateur->retournerIdentifiant($pNoClient)));
+            endif; 
+            if ($Commandes != NULL)
+            {
+                foreach ($Commandes as $UneCommande) 
+                {
+                    $ProduitsDuneCommande[] = $this->ModeleUtilisateur->CommandesTraitees($pNoClient, implode($UneCommande));
+                }
+                $DonneesAEnvoyer['lesCommandes'] = $ProduitsDuneCommande;
+                //retourne le libelle, la quantite commandee et le numero de la commande
+            }
+            else
+            {
+                $DonneesAEnvoyer['lesCommandes'] = NULL;
+                //ne renvoie rien
+            }
+            $this->load->view('templates/Entete', $Catalogue);
+            $this->load->view('Administrateur/HistoriqueCommande', $DonneesAEnvoyer);
+            $this->load->view('templates/PiedDePage');
+        }
+
+        public function ValiderCommande($pNoCommande, $pNoClient = NULL)
+        {
+            $this->ModeleArticle->ValiderCommande(array('Etat' => '1'), $pNoCommande);
+
+            $this->load->helper('url');
+            redirect('/Administrateur/CommandesNonTraitees/'.$pNoClient);
         }
     }
 ?>

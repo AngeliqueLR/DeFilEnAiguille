@@ -69,6 +69,8 @@
                             <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUneMarque') ?>">Ajouter une marque</a></li>&nbsp;&nbsp;
                             <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUneCategorie') ?>">Ajouter une catégorie</a></li>&nbsp;&nbsp;
                             <li class="active"><a href="<?php echo site_url('Administrateur/voirClients') ?>">Voir les clients</a></li>&nbsp;&nbsp;    
+                            <li class="active"><a href="<?php echo site_url('Administrateur/HistoriqueCommandes') ?>">Voir l'historique des commandes</a></li>&nbsp;&nbsp;    
+                            <li class="active"><a href="<?php echo site_url('Administrateur/CommandesNonTraitees') ?>">Voir les commandes non traitées</a></li>&nbsp;&nbsp;    
                         <?php endif; ?>    
                         <li class="active"><a href="<?php echo site_url('Visiteur/AfficherCatalogue') ?>">Catalogue</a></li>&nbsp;&nbsp;
                     </ul>
@@ -100,6 +102,16 @@
                     </div>
                     <div class="well">
                         <ul><a href="<?php echo site_url('Visiteur/listerLesArticlesAvecPagination') ?>">• Catalogue (par 3) •</a></ul>
+                        <form action="<?php echo site_url('Visiteur/afficherRecherche'); ?>" method = "GET" accept-charset = "UTF-8">
+                            <div class="form-group input-group">
+                                <input name="txtRechercher" type="keywords" class="form-control" placeholder="Rechercher.." autocomplete = "on">
+                                <span class="input-group-btn" height="40">
+                                    <button class="btn btn-default" type="button" height="34">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>        
+                            </div>
+                        </form>
                     </div>
                     <div class="well">
                         <ul>• Categories •

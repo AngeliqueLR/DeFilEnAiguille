@@ -14,7 +14,6 @@
         echo '<tr>';
 
             echo '<th>Numéro de la commande</th>';
-            echo '<th>Valider la commande</th>';
             if ($NoClient == NULL)
             {
                 echo '<th>Nom</th>';
@@ -36,7 +35,6 @@
                 $articlesAafficher = $uneCommande[0];
                 echo '<tr>';
                     echo '<td rowspan = '.$nbArticles.'>'.$articlesAafficher['NOCOMMANDE'].'</td>';
-                    echo '<td rowspan = '.$nbArticles.'>'.anchor('Administrateur/ValiderCommande/'.$articlesAafficher['NOCOMMANDE'].'/'.$NoClient, 'Valider cette commande').'</td>';
                     echo '<td rowspan = '.$nbArticles.'>'.$articlesAafficher['NOM'].'</td>';
                     echo '<td rowspan = '.$nbArticles.'>'.$articlesAafficher['PRENOM'].'</td>';
                     echo '<td rowspan = '.$nbArticles.'>'.$articlesAafficher['ADRESSE'].'</td>';
@@ -58,9 +56,8 @@
                 $nbArticles = count($uneCommande);
                 $articlesAafficher = $uneCommande[0];
                 echo '<tr>';
-                    echo '<td rowspan = '.$nbArticles.'>'.$articlesAafficher['NOCOMMANDE'].'</td>';
-                    echo '<td rowspan = '.$nbArticles.'>'.anchor('Administrateur/ValiderCommande/'.$articlesAafficher['NOCOMMANDE'].'/'.$NoClient, 'Valider cette commande').'</td>';
-                    for ($i = 0; $i <= $nbArticles - 1; $i = $i + 1) 
+                echo '<td rowspan = '.$nbArticles.'>'.$articlesAafficher['NOCOMMANDE'].'</td>';
+                for ($i = 0; $i <= $nbArticles - 1; $i = $i + 1) 
                     {
                         $articlesAafficher = $uneCommande[$i];
                         echo '<td>'.$articlesAafficher['LIBELLE'].'</td>';
