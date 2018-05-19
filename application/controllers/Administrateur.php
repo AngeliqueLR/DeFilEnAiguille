@@ -7,6 +7,8 @@
             $this->load->model('ModeleArticle');
             $this->load->model('ModeleUtilisateur');
             $this->load->library('email');
+            $this->load->helper('form');         
+            $this->load->library('form_validation');
 
             $this->load->library('session');
             if ($this->session->statut=='Client'or is_null($this->session->statut))
@@ -19,9 +21,6 @@
         public function ajouterUnProduit()
         {
             $Catalogue['Catalogue'] = 'non';
-
-            $this->load->helper('form');
-            $this->load->library('form_validation');
 
             $dateAjout = date('Y-m-d');
 
@@ -36,6 +35,7 @@
             $this->form_validation->set_rules('txtPhotoProduit', 'required');
             $this->form_validation->set_rules('txtPhotoBisProduit', 'required');
             $this->form_validation->set_rules('txtQuantiteProduit', 'required');
+            $this->form_validation->set_rules('txtPhotoAccueilProduit', 'required');
             $this->form_validation->set_rules('txtDetailsProduit', 'required');
             $this->form_validation->set_rules('txtMarqueProduit', 'required');
             $this->form_validation->set_rules('txtCategorieProduit', 'required');
@@ -47,7 +47,7 @@
                 'PRIXHT' => $this->input->post('txtPrixProduit'), 'TAUXTVA' => $this->input->post('txtTVAProduit'),
                 'NOMIMAGE' => $this->input->post('txtPhotoProduit'), 'NOMIMAGEBIS' => $this->input->post('txtPhotoBisProduit'),
                 'QUANTITEENSTOCK' => $this->input->post('txtQuantiteProduit'), 'DATEAJOUT' => $dateAjout,
-                'DISPONIBLE' => '1', 'Promotion' => '0');
+                'NOMIMAGEACCEUIL' => $this->input->post('txtPhotoAccueilProduit'), 'DISPONIBLE' => '1', 'Promotion' => '0');
 
                 $this->ModeleArticle->insererUnProduit($DonneesAInserer);
                 $this->load->helper('url');
@@ -65,9 +65,6 @@
         public function ajouterUneMarque()
         {
             $Catalogue['Catalogue'] = 'non';
-
-            $this->load->helper('form');
-            $this->load->library('form_validation');
 
             $DonneesEnvoyees['TitreDeLaPage'] = 'Ajouter une marque au catalogue';
             
@@ -95,9 +92,6 @@
         {
             $Catalogue['Catalogue'] = 'non';
 
-            $this->load->helper('form');
-            $this->load->library('form_validation');
-
             $DonneesEnvoyees['TitreDeLaPage'] = 'Ajouter une marque au catalogue';
             
             //regles de validations
@@ -124,9 +118,6 @@
         {
             $Catalogue['Catalogue'] = 'non';
 
-            $this->load->helper('form');
-            $this->load->library('form_validation');
-
             $DonneesEnvoyees['TitreDeLaPage'] = 'Modifier '.implode($this->ModeleArticle->NomProduit($pNoProduit));
             $DonneesEnvoyees['LesMarques'] = $this->ModeleArticle->retournerMarques();
             $DonneesEnvoyees['LesCategories'] = $this->ModeleArticle->retournerCategories();
@@ -142,6 +133,7 @@
             $this->form_validation->set_rules('txtPromotion', 'required');
             $this->form_validation->set_rules('txtPhotoProduit', 'required');
             $this->form_validation->set_rules('txtPhotoBisProduit', 'required');
+            $this->form_validation->set_rules('txtPhotoAccueilProduit', 'required');
             $this->form_validation->set_rules('txtQuantiteProduit', 'required');
             $this->form_validation->set_rules('txtDetailsProduit', 'required');
             $this->form_validation->set_rules('txtMarqueProduit', 'required');
@@ -175,7 +167,8 @@ Venez vite le commander.☺';
                 'LIBELLE' => $this->input->post('txtNomProduit'), 'DETAIL' => $this->input->post('txtDetailsProduit'),
                 'PRIXHT' => $this->input->post('txtPrixProduit'), 'TAUXTVA' => $this->input->post('txtTVAProduit'),
                 'NOMIMAGE' => $this->input->post('txtPhotoProduit'), 'NOMIMAGEBIS' => $this->input->post('txtPhotoBisProduit'),
-                'QUANTITEENSTOCK' => $this->input->post('txtQuantiteProduit'), 'DISPONIBLE' => $this->input->post('txtDisponible'), 'Promotion' => $this->input->post('txtPromotion'));
+                'NOMIMAGEACCEUIL' => $this->input->post('txtPhotoAccueilProduit'),'QUANTITEENSTOCK' => $this->input->post('txtQuantiteProduit'),
+                'DISPONIBLE' => $this->input->post('txtDisponible'), 'Promotion' => $this->input->post('txtPromotion'));
 
                 $this->ModeleArticle->ModifierProduit($DonneesAModifier, $pNoProduit);
                 $this->load->helper('url');

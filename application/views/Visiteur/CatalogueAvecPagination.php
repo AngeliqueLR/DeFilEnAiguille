@@ -21,7 +21,7 @@
                     echo anchor('Administrateur/ModifierProduit/'.$unProduit['NOPRODUIT'].'/'.$unProduit['QUANTITEENSTOCK'], 'Modifier ce produit'); 
                 else:
                     if ($unProduit['QUANTITEENSTOCK'] != 0) : 
-                        echo anchor('Visiteur/AjouterPanier/'.$unProduit['NOPRODUIT'].'/'.$unProduit['LIBELLE'].'/'.$prix.'/'.$unProduit['QUANTITEENSTOCK'].'/'.$Catalogue, '<span class="glyphicon glyphicon-shopping-cart"></span>'); 
+                        echo anchor('Visiteur/AjouterPanier/'.$unProduit['NOPRODUIT'].'/'.$prix.'/'.$unProduit['QUANTITEENSTOCK'].'/'.$Catalogue, '<span class="glyphicon glyphicon-shopping-cart"></span>'); 
                     else:
                         echo anchor('Client/Alerter/'.$unProduit['NOPRODUIT'], '<span class="glyphicon glyphicon-bell"></span>');
                     endif;

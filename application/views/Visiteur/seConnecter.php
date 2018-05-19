@@ -2,6 +2,10 @@
     <h2><?php echo $TitreDeLaPage ?></h2>
 
     <?php
+        if ($Erreur == 'Erreur')
+        {
+            echo '<script language="Javascript">alert("Erreur dans la saisie du mot de passe ou de l\'identifiant.")</script>';
+        }
         echo validation_errors(); // mise en place de la validation
         /* set_value : en cas de non validation les données déjà
         saisies sont réinjectées dans le formulaire */

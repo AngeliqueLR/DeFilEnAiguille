@@ -42,7 +42,7 @@
 
         public function retournerInfoUtilisateur($pUtilisateur)
         {
-            $this->db->select('NOM, PRENOM, ADRESSE, CODEPOSTAL, VILLE');
+            $this->db->select('NOM, PRENOM, ADRESSE, CODEPOSTAL, VILLE, EMAIL, MOTDEPASSE');
             $requete = $this->db->get_where('CLIENT',$pUtilisateur);
             return $requete->row_array();
         }
@@ -137,6 +137,13 @@
                 $requete = $this->db->get_where('ligne, produit, commande, client', 'produit.NOPRODUIT = ligne.NOPRODUIT and ligne.NOCOMMANDE = commande.NOCOMMANDE and commande.NOCOMMANDE = '.$pNoCommande.' and client.NOCLIENT = commande.NOCLIENT');
                 return $requete->result_array(); 
             }
+        }
+
+        public function ModifierClient($pDonneesAModifier, $pNoClient)
+        {
+            $this->db->set($pDonneesAModifier);
+            $this->db->where('NOCLIENT', $pNoClient);
+            return $this->db->update('client');
         }
     }
 ?>

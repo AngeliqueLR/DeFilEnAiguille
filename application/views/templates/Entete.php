@@ -73,6 +73,9 @@
                             <li class="active"><a href="<?php echo site_url('Administrateur/CommandesNonTraitees') ?>">Voir les commandes non traitées</a></li>&nbsp;&nbsp;    
                         <?php endif; ?>    
                         <li class="active"><a href="<?php echo site_url('Visiteur/AfficherCatalogue') ?>">Catalogue</a></li>&nbsp;&nbsp;
+                        <?php if ($this->session->statut=='Client'): ?>
+                            <li class="active"><a href="<?php echo site_url('Client/ModifierClient/'.$this->session->numero) ?>">Modifier mes infos</a></li>&nbsp;&nbsp;
+                        <?php endif; ?>    
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <?php if ($this->session->statut=='Client' or is_null($this->session->statut)) : ?>
@@ -102,11 +105,12 @@
                     </div>
                     <div class="well">
                         <ul><a href="<?php echo site_url('Visiteur/listerLesArticlesAvecPagination') ?>">• Catalogue (par 3) •</a></ul>
-                        <form action="<?php echo site_url('Visiteur/afficherRecherche'); ?>" method = "GET" accept-charset = "UTF-8">
+                        <?php echo form_open('Visiteur/afficherRecherche'); ?>
+                        
                             <div class="form-group input-group">
-                                <input name="txtRechercher" type="keywords" class="form-control" placeholder="Rechercher.." autocomplete = "on">
-                                <span class="input-group-btn" height="40">
-                                    <button class="btn btn-default" type="button" height="34">
+                                <input name="txtRechercher" type="text" class="form-control" placeholder="Rechercher.." autocomplete = "on">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type="submit" style="height = 34">
                                         <span class="glyphicon glyphicon-search"></span>
                                     </button>
                                 </span>        

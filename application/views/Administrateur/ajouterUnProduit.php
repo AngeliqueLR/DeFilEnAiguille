@@ -3,27 +3,31 @@
     <?php 
         echo validation_errors();
         echo form_open('Administrateur/ajouterUnProduit') 
+        //echo '<form action ="'.site_url('Administrateur/ajouterUnProduit').'" methode = "post" accept-charset = "utf-8" name = "ajouterProduit">';
     ?>
         <label for="txtNomProduit">Nom du produit</label>
-            <input type="input" name="txtNomProduit" value="<?php echo set_value('txtNomProduit'); ?>" /><br/>
+            <input pattern = "[a-zA-ZÀ-ÿ ]*" maxlength = 50 type="input" name="txtNomProduit" value="<?php echo set_value('txtNomProduit'); ?>" /><br/>
 
         <label for="txtDetailsProduit">Détails de l'article</label>
-            <textarea name="txtDetailsProduit" value="<?php echo set_value('txtDetailsProduit'); ?>"></textarea><br/>
+            <textarea maxlenght = 300 name="txtDetailsProduit" value="<?php echo set_value('txtDetailsProduit'); ?>"></textarea><br/>
 
         <label for="txtPrixProduit">Prix HT du produit</label>
-            <input type="input" name="txtPrixProduit" value="<?php echo set_value('txtPrixProduit'); ?>" /><br/>
+            <input pattern = "[0-9,.]*" maxlength = 5 type="input" name="txtPrixProduit" value="<?php echo set_value('txtPrixProduit'); ?>" /><br/>
         
         <label for="txtTVAProduit">Taux TVA du produit (en %)</label>
-            <input type="input" name="txtTVAProduit" value="<?php echo set_value('txtTVAProduit'); ?>" /><br/>
+            <input pattern = "[0-9,.]*" maxlength = 5 type="input" name="txtTVAProduit" value="<?php echo set_value('txtTVAProduit'); ?>" /><br/>
 
         <label for="txtPhotoProduit">Première photo du produit</label>
-            <input type="input" name="txtPhotoProduit" value="<?php echo set_value('txtPhotoProduit'); ?>" /><br/>
+            <input pattern = "[a-zA-Z0-9.]*" type="input" name="txtPhotoProduit" value="<?php echo set_value('txtPhotoProduit'); ?>" /><br/>
 
         <label for="txtPhotoBisProduit">Deuxième photo du produit</label>
-            <input type="input" name="txtPhotoBisProduit" value="<?php echo set_value('txtPhotoBisProduit'); ?>" /><br/>
+            <input pattern = "[a-zA-Z0-9.]*" type="input" name="txtPhotoBisProduit" value="<?php echo set_value('txtPhotoBisProduit'); ?>" /><br/>
+
+        <label for="txtPhotoAccueilProduit">Photo du produit pour le carousel</label>
+            <input pattern = "[a-zA-Z0-9.]*" type="input" name="txtPhotoAccueilProduit" value="<?php echo set_value('txtPhotoAccueilProduit'); ?>" /><br/>            
 
         <label for="txtQuantiteProduit">Quantité en stock</label>
-            <input type="input" name="txtQuantiteProduit" value="<?php echo set_value('txtQuantiteProduit'); ?>" /><br/>
+            <input pattern = "[0-9]*" maxlength = 3 type="input" name="txtQuantiteProduit" value="<?php echo set_value('txtQuantiteProduit'); ?>" /><br/>
 
         <label for="txtMarqueProduit">Marque du produit</label>
             <select name="txtMarqueProduit" value="<?php echo set_value('txtMarqueProduit'); ?>" >

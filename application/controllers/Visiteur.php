@@ -9,7 +9,10 @@
             $this->load->library("pagination");
             $this->load->library('cart');           
             $this->load->model('ModeleArticle');          
-            $this->load->model('ModeleUtilisateur');          
+            $this->load->model('ModeleUtilisateur'); 
+            $this->load->helper('form');
+            $this->load->library('form_validation');
+            $this->load->library('email');         
         }
 
         public function AfficherCatalogue()
@@ -29,9 +32,6 @@
         public function voirUnProduit($pNoProduit = NULL)
         {
             $Catalogue['Catalogue'] = 'non';
-
-            $this->load->helper('form');
-            $this->load->library('form_validation');
 
             $this->form_validation->set_rules('txtQuantiteDesiree', 'required');
 
@@ -54,10 +54,8 @@
         {
             $Catalogue['Catalogue'] = 'non';
 
-            $this->load->helper('form');
-            $this->load->library('form_validation');
-
             $DonneesInjectees['TitreDeLaPage'] = 'Connectez-vous!';
+            $DonneesInjectees['Erreur'] = '';
 
             $this->form_validation->set_rules('txtIdentifiant', 'required');
             $this->form_validation->set_rules('txtMotDePasse', 'required');
@@ -83,6 +81,7 @@
                     $this->session->statut = $UtilisateurRetourne->PROFIL;
                     $this->session->nom = $UtilisateurRetourne->NOM;
                     $this->session->prenom = $UtilisateurRetourne->PRENOM;
+                    $this->session->numero = $UtilisateurRetourne->NOCLIENT;
 
                     $DonneesInjectees['Identifiant'] = $Utilisateur['EMAIL'];
                     
@@ -91,6 +90,7 @@
                 }
                 else
                 {
+                    $DonneesInjectees['Erreur'] = 'Erreur';
                     $this->load->view('templates/Entete', $Catalogue);
                     $this->load->view('Visiteur/seConnecter', $DonneesInjectees);
                     $this->load->view('templates/PiedDePage');
@@ -101,10 +101,6 @@
         public function Inscription()
         {
             $Catalogue['Catalogue'] = 'non';
-
-            $this->load->helper('form');
-            $this->load->library('form_validation');
-            $this->load->library('email');
 
             $DonneesInjectees['TitreDeLaPage'] = 'Inscrivez-vous!';
 
@@ -146,6 +142,7 @@
                         $this->session->statut = $UtilisateurRetourne->PROFIL;
                         $this->session->nom = $UtilisateurRetourne->NOM;
                         $this->session->prenom = $UtilisateurRetourne->PRENOM;
+                        $this->session->numero = $UtilisateurRetourne->NOCLIENT;
 
                         $DonneesInjectees['Identifiant'] = $Utilisateur['EMAIL'];
                         $DonneesInjectees['Nom'] = $this->input->post('Nom');
@@ -228,10 +225,16 @@ En espérant que vous trouverez votre bonheur chez nous.☺';
 
         public function Accueil()
         {
-            $Catalogue['Catalogue'] = 'non';
+            $Catalogue['Catalogue'] = 'accueil';
+            $DonneesAEnvoyees['MeilleuresVentes'] = $this->ModeleArticle->meilleuresVentes();
+            $DonneesAEnvoyees['LesPromos'] = $this->ModeleArticle->lesPromos();
+            $DonneesAEnvoyees['lesAjoutsRecents'] = $this->ModeleArticle->lesAjoutsRecents();
+            $DonneesAEnvoyees['LAmeilleureVente'] = $this->ModeleArticle->LAmeilleureVente();
+            $DonneesAEnvoyees['LAmeilleurePromo'] = $this->ModeleArticle->LAmeilleurePromo();
+            $DonneesAEnvoyees['LajoutLePlusRecent'] = $this->ModeleArticle->LajoutLePlusRecent();
 
             $this->load->view('templates/Entete', $Catalogue);
-            $this->load->view('Visiteur/Accueil');
+            $this->load->view('Visiteur/Accueil', $DonneesAEnvoyees);
             $this->load->view('templates/PiedDePage');
         }
 
@@ -276,7 +279,7 @@ En espérant que vous trouverez votre bonheur chez nous.☺';
             $this->load->view('templates/PiedDePage');            
         }
 
-        public function AjouterPanier($pNumeroProduit, $pNomProduit, $pPrix, $pQuantiteMax, $pCatalogue)
+        public function AjouterPanier($pNumeroProduit, $pPrix, $pQuantiteMax, $pCatalogue)
         {            
             if ($pCatalogue == 'non'):
                 $NomProduit = implode($this->ModeleArticle->NomProduit($pNumeroProduit));
@@ -307,17 +310,22 @@ En espérant que vous trouverez votre bonheur chez nous.☺';
     
                     $this->cart->insert($produitAjoute);
                 }               
-
-                $this->load->helper('url');
-                redirect('Visiteur/AfficherCatalogue');
+                
+                if ($pCatalogue == 'oui')
+                {
+                    $this->load->helper('url');
+                    redirect('Visiteur/AfficherCatalogue');
+                }
+                else
+                {
+                    $this->load->helper('url');
+                    redirect('Visiteur/Accueil');
+                }
             endif;                         
         }
 
         public function VoirPanier()
         {
-            $this->load->helper('form');
-            $this->load->library('form_validation');
-
             $Catalogue['Catalogue'] = 'non';
 
             $this->load->view('templates/Entete', $Catalogue);

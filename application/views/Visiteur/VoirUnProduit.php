@@ -21,7 +21,7 @@
                 echo anchor('Visiteur/Alerter/'.$unProduit['NOPRODUIT'], '<span class=\'glyphicon glyphicon-bell\'></span> M\'alerter à la remise en stock');
               else :
               
-              echo form_open('Visiteur/AjouterPanier/'.$unProduit['NOPRODUIT'].'/'.$unProduit['LIBELLE'].'/'.$prix.'/'.$unProduit['QUANTITEENSTOCK'].'/'.$Catalogue);
+              echo form_open('Visiteur/AjouterPanier/'.$unProduit['NOPRODUIT'].'/'.$prix.'/'.$unProduit['QUANTITEENSTOCK'].'/'.$Catalogue);
             ?>
               <label for="txtQuantiteDesiree">Quantité désirée</label>
                 <select name="txtQuantiteDesiree">

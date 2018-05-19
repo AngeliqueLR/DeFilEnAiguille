@@ -7,28 +7,31 @@
             $this->load->library('cart');           
             $this->load->model('ModeleUtilisateur');
             $this->load->model('ModeleArticle');
+            $this->load->helper('form'); 
+            $this->load->library('form_validation');
+            $this->load->library('email'); 
 
             $this->load->library('session');
             if ($this->session->statut==NULL | $this->session->statut=='Administrateur')
             {
                 $this->load->helper('url');
                 redirect('/Visiteur/seConnecter');
-            }
+            }   
         }
 
         
         public function ValiderPanier($pNoProduit = NULL, $pQte = NULL, $pQteMax = NULL, $pRowid = NULL)
         {
-            $this->load->helper('form');
-            $this->load->library('form_validation');
-            $this->load->library('email');
-
             $Catalogue['Catalogue'] = 'non';
             $DonneesInjectees['TitreDeLaPage'] = 'Validation de votre panier';
             $NoClient =implode($this->ModeleUtilisateur->retournerNumeroUtilisateur($this->session->identifiant));
             $DonneesInjectees['noClient'] = $NoClient;
             $DonneesInjectees['eMail'] = $this->session->identifiant;
             $DonneesInjectees['InfoClient'] = $this->ModeleUtilisateur->retournerInfoUtilisateur('EMAIL like  \''.$this->session->identifiant.'\'');
+            $DonneesInjectees['NoProduit'] = $pNoProduit;
+            $DonneesInjectees['Qte'] = $pQte;
+            $DonneesInjectees['QteMax'] = $pQteMax;
+            $DonneesInjectees['Rowid'] = $pRowid;
 
             $this->form_validation->set_rules('txtNom', 'required');
             $this->form_validation->set_rules('txtPrenom', 'required');
@@ -45,7 +48,7 @@
             }
             else
             {
-                if ($pNoProduit === NULL)
+                if ($pNoProduit == NULL)
                 {
                     $DonneesAInserer = array('NOCLIENT' => $NoClient, 'DATECOMMANDE' => date('y-m-d'), 'ETAT' => '0');
                     $this->ModeleArticle->AjoutCommande($DonneesAInserer);
@@ -84,7 +87,7 @@ Le total de votre commande s\'élève à '.$this->cart->format_number($this->car
 
 Merci de votre confiance.
 A bientôt!☺';
-        $this->email->message($message);	
+                    $this->email->message($message);	
 
                     if (!$this->email->send())
                     {
@@ -97,7 +100,7 @@ A bientôt!☺';
                     $DonneesAInserer = array('NOCLIENT' => $NoClient, 'DATECOMMANDE' => date('y-m-d'), 'ETAT' => '0');
                     $this->ModeleArticle->AjoutCommande($DonneesAInserer);
                     $numCommande = implode($this->ModeleArticle->retournerIdDerniereCommande());
-                    $DonneesInserer = array('NOCOMMANDE' => $numCommande, 'NOPRODUIT' => $pNoProduit, 'QUANTITE' => $pQte);
+                    $DonneesInserer = array('NOCOMMANDE' => $numCommande, 'NOPRODUIT' => $pNoProduit, 'QUANTITECOMMANDEE' => $pQte);
                     $QteAModifier = $pQteMax - $pQte;
                     $DonneesAModifier = array('QUANTITEENSTOCK' => $QteAModifier);
                     $this->ModeleArticle->AjoutLigne($DonneesInserer);
@@ -124,7 +127,7 @@ L\'adresse de livraison est :
 Vous avez commandé :
         → '.implode($this->ModeleArticle->NomProduit($pNoProduit)).' au prix de '.implode($this->ModeleArticle->PrixProduit($pNoProduit)).'€ en '.$pQte.' exemplaire(s).
 
-Le total de votre commande s\'élève à '.implode($this->ModeleArticle->PrixProduit($pNoProduit))*$Qte.'€
+Le total de votre commande s\'élève à '.implode($this->ModeleArticle->PrixProduit($pNoProduit))*$pQte.'€
 
 Merci de votre confiance.
 A bientôt!☺';
@@ -134,9 +137,10 @@ A bientôt!☺';
                     {
                         $this->email->print_debugger();
                     }
-                    $this->Visiteur->modifierQteMoins($pRowid, 1);
+                    $this->load->helper('url');
+                    redirect('/Visiteur/modifierQteMoins/'.$pRowid.'/1');
                 }
-                         
+                      
                 $this->load->helper('url');
                 redirect('Visiteur/AfficherCatalogue');
             }
@@ -148,6 +152,50 @@ A bientôt!☺';
 
             $this->load->helper('url');
             redirect('Visiteur/AfficherCatalogue');
+        }
+
+        public function ModifierClient($pNoClient)
+        {
+            $Catalogue['Catalogue'] = 'non';
+
+            $DonneesEnvoyees['TitreDeLaPage'] = 'Modifiez vos informations';
+            $DonneesEnvoyees['NoClient'] = $pNoClient;
+            $DonneesEnvoyees['InfoClient'] = $this->ModeleUtilisateur->retournerInfoUtilisateur(array('NOCLIENT' => $pNoClient));
+
+            //regles de validations
+            $this->form_validation->set_rules('txtNom', 'required');
+            $this->form_validation->set_rules('txtPrenom', 'required');
+            $this->form_validation->set_rules('txtAdresse', 'required');
+            $this->form_validation->set_rules('txtCP', 'required');
+            $this->form_validation->set_rules('txtVille', 'required');
+            $this->form_validation->set_rules('txtEmail', 'required');
+            $this->form_validation->set_rules('txtMDP', 'required');
+            $this->form_validation->set_rules('txtConfMDP', 'required');
+            
+            if ($this->input->post('submit'))
+            {
+                if ($this->input->post('txtMDP') == $this->input->post('txtConfMDP')):
+                    $DonneesAModifier = array('NOM' => $this->input->post('txtNom'), 'PRENOM' => $this->input->post('txtPrenom'), 
+                    'ADRESSE' => $this->input->post('txtAdresse'), 'CODEPOSTAL' => $this->input->post('txtCP'),
+                    'VILLE' => $this->input->post('txtVille'), 'EMAIL' => $this->input->post('txtEmail'),
+                    'MOTDEPASSE' => $this->input->post('txtMDP'));
+                    $this->ModeleUtilisateur->ModifierClient($DonneesAModifier, $pNoClient);
+                
+                    $this->load->helper('url');
+                    redirect('/Visiteur/AfficherCatalogue');
+                else:
+                    $this->load->view('templates/Entete', $Catalogue);
+                    $this->load->view('Client/ModifierInfo', $DonneesEnvoyees);
+                    $this->load->view('templates/PiedDePage');
+                endif;
+            }
+            else 
+            {        
+                //formulaire non validé
+                $this->load->view('templates/Entete', $Catalogue);
+                $this->load->view('Client/ModifierInfo', $DonneesEnvoyees);
+                $this->load->view('templates/PiedDePage');        
+            }  
         }
     }
 ?>
