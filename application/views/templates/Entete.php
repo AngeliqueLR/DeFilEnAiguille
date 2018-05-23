@@ -1,20 +1,9 @@
 <html>
     <head>
         <title>De fil en aiguille</title>
-        <style type = 'text/css'>
-            select[name=tbxCategorieProduit], select
-            {
-                width : 175px;
-                height : 21px;
-            }
-            select[name=tbxMarqueProduit], select
-            {
-                width : 175px;
-                height : 21px;
-            }
-        </style>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="<?php echo css_url('CSS');?>">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -24,13 +13,6 @@
             {
                 margin-bottom: 0;
                 border-radius: 0;
-            }
-            
-            /* Add a gray background color and some padding to the footer */
-            footer 
-            {
-                background-color: #f2f2f2;
-                padding: 25px;
             }
             
             .carousel-inner img 
@@ -50,7 +32,7 @@
             }
         </style>
     </head>
-    <body>
+    <body id="body">
 
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
@@ -60,17 +42,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>                        
                     </button>
-                    <a class="navbar-brand" href="#">Logo</a>
+                    <a class="navbar-brand" href="<?php echo site_url('Visiteur/APropos') ?>">Logo</a>
                     </div>
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<?php echo site_url('Visiteur/Accueil') ?>"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
                         <?php if ($this->session->statut=='Administrateur') : ?>
-                            <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUnProduit') ?>">Ajouter un produit</a></li>&nbsp;&nbsp;
-                            <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUneMarque') ?>">Ajouter une marque</a></li>&nbsp;&nbsp;
-                            <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUneCategorie') ?>">Ajouter une catégorie</a></li>&nbsp;&nbsp;
-                            <li class="active"><a href="<?php echo site_url('Administrateur/voirClients') ?>">Voir les clients</a></li>&nbsp;&nbsp;    
-                            <li class="active"><a href="<?php echo site_url('Administrateur/HistoriqueCommandes') ?>">Voir l'historique des commandes</a></li>&nbsp;&nbsp;    
-                            <li class="active"><a href="<?php echo site_url('Administrateur/CommandesNonTraitees') ?>">Voir les commandes non traitées</a></li>&nbsp;&nbsp;    
+                            <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUnProduit') ?>">Ajout</a></li>&nbsp;&nbsp;
+                            <li class="active"><a href="<?php echo site_url('Administrateur/VoirClients') ?>">Clients</a></li>&nbsp;&nbsp;    
+                            <li class="active"><a href="<?php echo site_url('Administrateur/CommandesNonTraitees') ?>">Commandes</a></li>&nbsp;&nbsp;    
                         <?php endif; ?>    
                         <li class="active"><a href="<?php echo site_url('Visiteur/AfficherCatalogue') ?>">Catalogue</a></li>&nbsp;&nbsp;
                         <?php if ($this->session->statut=='Client'): ?>
@@ -147,6 +126,62 @@
                                 <li><?php echo anchor('Visiteur/AfficherCatalogueParDate/3/','Supérieur à 15 jours');?></li>
                             </p>
                         </ul>
+                    </div>
+                </div>
+        <?php
+            endif;
+        ?>
+
+        <?php
+            if($Catalogue == 'commandes') :
+        ?>
+            <br/><br/>
+            <div class="container text-center">    
+                <div class="row">
+                    <div class="col-sm-3 well">
+                    <div class="well">
+                        <p>De Fil en Aiguille</p>
+                        <img src="<?php echo img_url('LOGO.jpg');?>" class="img-circle" height="65" width="65" alt="Avatar">
+                    </div>
+
+                    <div class="well">
+                        <?php   if ($NoClient != NULL)
+                            {
+                                echo '<p>Voir les commandes de '.implode(' ', $NomPrenom).'</p>';
+                                echo '<p>'.anchor('Administrateur/CommandesNonTraitees/'.$NoClient, 'Voir les commandes non traitées').'</p>';
+                                echo '<p>'.anchor('Administrateur/HistoriqueCommandes/'.$NoClient, 'Voir l\'historique des commandes').'</p>';
+                            }
+                            else
+                            {   
+                                echo '<p>Voir les commandes</p>';
+                                echo '<p>'.anchor('Administrateur/CommandesNonTraitees', 'Voir les commandes non traitées').'</p>';
+                                echo '<p>'.anchor('Administrateur/HistoriqueCommandes', 'Voir l\'historique des commandes').'</p>';
+                            }
+                        ?>
+                    </div>
+                </div>
+        <?php
+            endif;
+        ?>
+
+        <?php
+            if($Catalogue == 'ajout') :
+        ?>
+            <br/><br/>
+            <div class="container text-center">    
+                <div class="row">
+                    <div class="col-sm-3 well">
+                    <div class="well">
+                        <p>De Fil en Aiguille</p>
+                        <img src="<?php echo img_url('LOGO.jpg');?>" class="img-circle" height="65" width="65" alt="Avatar">
+                    </div>
+
+                    <div class="well">
+                        <p>Effectuer un ajout</p>
+                        <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUnProduit') ?>">Ajouter un produit</a></li>&nbsp;&nbsp;
+                        <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUneMarque') ?>">Ajouter une marque</a></li>&nbsp;&nbsp;
+                        <li class="active"><a href="<?php echo site_url('Administrateur/ajouterUneCategorie') ?>">Ajouter une catégorie</a></li>&nbsp;&nbsp;
+                            
                     </div>
                 </div>
         <?php

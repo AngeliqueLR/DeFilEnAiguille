@@ -40,7 +40,7 @@
         public function retournerArticlesLimite($nombreDeLignesARetourner, $noPremiereLigneARetourner)
         {
             $this->db->limit($nombreDeLignesARetourner, $noPremiereLigneARetourner);
-            $requete = $this->db->get("PRODUIT");
+            $requete = $this->db->get_where("PRODUIT", array('DISPONIBLE' => 1));
 
             if($requete->num_rows() > 0)
             {

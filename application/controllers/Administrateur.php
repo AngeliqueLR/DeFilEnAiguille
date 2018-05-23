@@ -9,6 +9,8 @@
             $this->load->library('email');
             $this->load->helper('form');         
             $this->load->library('form_validation');
+            $this->load->helper('url');
+            $this->load->helper('assets');
 
             $this->load->library('session');
             if ($this->session->statut=='Client'or is_null($this->session->statut))
@@ -20,7 +22,7 @@
 
         public function ajouterUnProduit()
         {
-            $Catalogue['Catalogue'] = 'non';
+            $Catalogue['Catalogue'] = 'ajout';
 
             $dateAjout = date('Y-m-d');
 
@@ -64,7 +66,7 @@
 
         public function ajouterUneMarque()
         {
-            $Catalogue['Catalogue'] = 'non';
+            $Catalogue['Catalogue'] = 'ajout';
 
             $DonneesEnvoyees['TitreDeLaPage'] = 'Ajouter une marque au catalogue';
             
@@ -90,8 +92,8 @@
 
         public function ajouterUneCategorie()
         {
-            $Catalogue['Catalogue'] = 'non';
-
+            $Catalogue['Catalogue'] = 'ajout';
+            
             $DonneesEnvoyees['TitreDeLaPage'] = 'Ajouter une marque au catalogue';
             
             //regles de validations
@@ -163,11 +165,39 @@ Venez vite le commander.☺';
                     endforeach;
                     $this->ModeleArticle->SupprimerAlerter($pNoProduit);
                 }
+
+                if ($this->input->post('PhotoProduit') != null and $this->input->post('PhotoProduit') != $this->input->post('txtPhotoProduit'))
+                {
+                    $cheminPhoto = $this->input->post('PhotoProduit');
+                }
+                else
+                {
+                    $cheminPhoto = $this->input->post('txtPhotoProduit');
+                }
+
+                if ($this->input->post('PhotoProduitBis') != null and $this->input->post('PhotoProduitBis') != $this->input->post('txtPhotoProduitBis'))
+                {
+                    $cheminPhotoBis = $this->input->post('PhotoProduitBis');
+                }
+                else
+                {
+                    $cheminPhotoBis = $this->input->post('txtPhotoProduitBis');
+                }
+
+                if ($this->input->post('PhotoProduitAcceuil') != null and $this->input->post('PhotoProduitAcceuil') != $this->input->post('txtPhotoAccueilProduit'))
+                {
+                    $cheminPhotoAccueil = $this->input->post('PhotoProduitAcceuil');
+                }
+                else
+                {
+                    $cheminPhotoAccueil = $this->input->post('txtPhotoAccueilProduit');
+                }
+
                 $DonneesAModifier = array('NOCATEGORIE' => $this->input->post('txtCategorieProduit'), 'NOMARQUE' => $this->input->post('txtMarqueProduit'), 
                 'LIBELLE' => $this->input->post('txtNomProduit'), 'DETAIL' => $this->input->post('txtDetailsProduit'),
                 'PRIXHT' => $this->input->post('txtPrixProduit'), 'TAUXTVA' => $this->input->post('txtTVAProduit'),
-                'NOMIMAGE' => $this->input->post('txtPhotoProduit'), 'NOMIMAGEBIS' => $this->input->post('txtPhotoBisProduit'),
-                'NOMIMAGEACCEUIL' => $this->input->post('txtPhotoAccueilProduit'),'QUANTITEENSTOCK' => $this->input->post('txtQuantiteProduit'),
+                'NOMIMAGE' => $cheminPhoto, 'NOMIMAGEBIS' => $cheminPhotoBis,
+                'NOMIMAGEACCEUIL' => $cheminPhotoAccueil,'QUANTITEENSTOCK' => $this->input->post('txtQuantiteProduit'),
                 'DISPONIBLE' => $this->input->post('txtDisponible'), 'Promotion' => $this->input->post('txtPromotion'));
 
                 $this->ModeleArticle->ModifierProduit($DonneesAModifier, $pNoProduit);
@@ -193,27 +223,15 @@ Venez vite le commander.☺';
             $this->load->view('templates/PiedDePage');
         }
 
-        public function VoirLesCommandes($pNoClient = NULL)
-        {
-            $DonneesAEnvoyer['NoClient'] = $pNoClient;
-            $Catalogue['Catalogue'] = 'non';
-            if ($pNoClient != NULL):
-                $DonneesAEnvoyer['NomPrenom'] = $this->ModeleUtilisateur->retournerNomPrenom(implode($this->ModeleUtilisateur->retournerIdentifiant($pNoClient)));
-            endif;
-
-            $this->load->view('templates/Entete', $Catalogue);
-            $this->load->view('Administrateur/VoirLesCommandes', $DonneesAEnvoyer);
-            $this->load->view('templates/PiedDePage');
-        }
-
         public function CommandesNonTraitees($pNoClient = NULL)
         {
             $DonneesAEnvoyer['NoClient'] = $pNoClient;
-            $Catalogue['Catalogue'] = 'non';
+            $Catalogue['Catalogue'] = 'commandes';
+            $Catalogue['NoClient'] = $pNoClient;
             $Commandes = $this->ModeleUtilisateur->retournerNoCommandesNonTraitees($pNoClient); 
             //le numéro commande peut être égal à NULL et donc retourne les commandes passées par tous les utilisateurs
             if ($pNoClient != NULL):
-                $DonneesAEnvoyer['NomPrenom'] = $this->ModeleUtilisateur->retournerNomPrenom(implode($this->ModeleUtilisateur->retournerIdentifiant($pNoClient)));
+                $Catalogue['NomPrenom'] = $this->ModeleUtilisateur->retournerNomPrenom(implode($this->ModeleUtilisateur->retournerIdentifiant($pNoClient)));
             endif; 
             if ($Commandes != NULL)
             {
@@ -237,11 +255,12 @@ Venez vite le commander.☺';
         public function HistoriqueCommandes($pNoClient = NULL)
         {
             $DonneesAEnvoyer['NoClient'] = $pNoClient;
-            $Catalogue['Catalogue'] = 'non';
+            $Catalogue['NoClient'] = $pNoClient;
+            $Catalogue['Catalogue'] = 'commandes';
             $Commandes = $this->ModeleUtilisateur->retournerHistoriqueCommandes($pNoClient); 
             //le numéro commande peut être égal à NULL et donc retourne les commandes passées par tous les utilisateurs
             if ($pNoClient != NULL):
-                $DonneesAEnvoyer['NomPrenom'] = $this->ModeleUtilisateur->retournerNomPrenom(implode($this->ModeleUtilisateur->retournerIdentifiant($pNoClient)));
+                $Catalogue['NomPrenom'] = $this->ModeleUtilisateur->retournerNomPrenom(implode($this->ModeleUtilisateur->retournerIdentifiant($pNoClient)));
             endif; 
             if ($Commandes != NULL)
             {

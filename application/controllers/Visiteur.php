@@ -374,5 +374,13 @@ En espérant que vous trouverez votre bonheur chez nous.☺';
             $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees, $Catalogue);
             $this->load->view('templates/PiedDePage');            
         }
+
+        public function APropos()
+        {
+            $Catalogue['Catalogue'] = 'non';
+            $this->load->view('templates/Entete', $Catalogue);
+            $this->load->view('Visiteur/APropos');
+            $this->load->view('templates/PiedDePage');            
+        }
     }
 ?>

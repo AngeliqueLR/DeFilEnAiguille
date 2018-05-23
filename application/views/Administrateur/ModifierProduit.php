@@ -5,31 +5,34 @@
         echo form_open('Administrateur/ModifierProduit/'.$NoProduit.'/'.$Qte) 
     ?>
         <label for="txtNomProduit">Nom du produit</label>
-            <input pattern = "[a-zA-ZÀ-ÿ ]*" maxlength = 50 type="input" name="txtNomProduit" value="<?php echo $InfoProduits['LIBELLE']; ?>" /><br/>
+            <input required pattern = "[a-zA-ZÀ-ÿ ]*" maxlength = 50 type="input" name="txtNomProduit" value="<?php echo $InfoProduits['LIBELLE']; ?>" /><br/>
 
         <label for="txtDetailsProduit">Détails de l'article</label>
-            <textarea  maxlenght = 300 name="txtDetailsProduit"><?php echo $InfoProduits['DETAIL']; ?></textarea><br/>
+            <textarea required maxlenght = 300 name="txtDetailsProduit"><?php echo $InfoProduits['DETAIL']; ?></textarea><br/>
 
         <label for="txtPrixProduit">Prix HT du produit</label>
-            <input pattern = "[0-9,.]*" maxlength = 5 type="input" name="txtPrixProduit" value="<?php echo $InfoProduits['PRIXHT']; ?>" /><br/>
+            <input required pattern = "[0-9,.]*" maxlength = 5 type="input" name="txtPrixProduit" value="<?php echo $InfoProduits['PRIXHT']; ?>" /><br/>
         
         <label for="txtTVAProduit">Taux TVA du produit (en %)</label>
-            <input pattern = "[0-9,.]*" maxlength = 5 type="input" name="txtTVAProduit" value="<?php echo $InfoProduits['TAUXTVA']; ?>" /><br/>
+            <input required pattern = "[0-9,.]*" maxlength = 5 type="input" name="txtTVAProduit" value="<?php echo $InfoProduits['TAUXTVA']; ?>" /><br/>
 
         <label for="txtPromotion">Taux de promotion (en %)</label>
-            <input pattern = "[0-9,.]*" type="input" name="txtPromotion" value="<?php echo $InfoProduits['Promotion']; ?>" /><br/>
+            <input required pattern = "[0-9,.]*" type="input" name="txtPromotion" value="<?php echo $InfoProduits['Promotion']; ?>" /><br/>
 
         <label for="txtPhotoProduit">Première photo du produit</label>
-            <input pattern = "[a-zA-Z0-9.]*" type="input" name="txtPhotoProduit" value="<?php echo $InfoProduits['NOMIMAGE']; ?>" /><br/>
+            <input type="file" name="PhotoProduit" id="PhotoProduit" style="visibility:hidden" />
+            <input required pattern = "[a-zA-Z0-9.]*" type="input" accept=".jpg, .JPG, .jpeg" onclick="document.getElementById('PhotoProduit').click();getFileName()" name="txtPhotoProduit" value="<?php echo $InfoProduits['NOMIMAGE']; ?>" /><br/>
 
         <label for="txtPhotoBisProduit">Deuxième photo du produit</label>
-            <input pattern = "[a-zA-Z0-9.]*" type="input" name="txtPhotoBisProduit" value="<?php echo $InfoProduits['NOMIMAGEBIS']; ?>" /><br/>
+        <input type="file" name="PhotoProduitBis" id="PhotoProduitBis" style="visibility:hidden" />
+            <input  pattern = "[a-zA-Z0-9.]*" type="input" accept=".jpg, .JPG, .jpeg" onclick="document.getElementById('PhotoProduitBis').click();getFileName()" name="txtPhotoBisProduit" value="<?php echo $InfoProduits['NOMIMAGEBIS']; ?>" /><br/>
 
         <label for="txtPhotoAccueilProduit">Photo du produit pour le carousel</label>
-            <input pattern = "[a-zA-Z0-9.]*" type="input" name="txtPhotoAccueilProduit" value="<?php echo $InfoProduits['NOMIMAGEACCEUIL']; ?>" /><br/> 
+        <input type="file" name="PhotoProduitAcceuil" id="PhotoProduitAcceuil" style="visibility:hidden" />
+            <input  pattern = "[a-zA-Z0-9.]*" type="input" accept=".jpg, .JPG, .jpeg" onclick="document.getElementById('PhotoProduitAcceuil').click();getFileName()" name="txtPhotoAccueilProduit" value="<?php echo $InfoProduits['NOMIMAGEACCEUIL']; ?>" /><br/>
 
         <label for="txtQuantiteProduit">Quantité en stock</label>
-            <input pattern = "[0-9]*" maxlength = 3 type="input" name="txtQuantiteProduit" value="<?php echo $InfoProduits['QUANTITEENSTOCK']; ?>" /><br/>
+            <input required pattern = "[0-9]*" maxlength = 3 type="input" name="txtQuantiteProduit" value="<?php echo $InfoProduits['QUANTITEENSTOCK']; ?>" /><br/>
 
         <label for="txtMarqueProduit">Marque du produit</label>
             <select name="txtMarqueProduit" value="<?php echo $MarqueCategorie['NOM']; ?>" >

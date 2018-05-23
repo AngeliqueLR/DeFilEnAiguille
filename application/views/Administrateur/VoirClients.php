@@ -20,7 +20,7 @@
         <td><?php echo $Client['CODEPOSTAL'];?></td>
         <td><?php echo $Client['VILLE'];?></td>
         <td><?php echo $Client['EMAIL'];?></td>
-        <td><?php echo anchor('Administrateur/VoirLesCommandes/'.$Client['NOCLIENT'], 'Voir les commandes de ce client');?></td>
+        <td><?php echo anchor('Administrateur/CommandesNonTraitees/'.$Client['NOCLIENT'], 'Voir les commandes de ce client');?></td>
     </tr>
 
     <?php 
