@@ -79,7 +79,7 @@
                 <div class="row">
                     <div class="col-sm-3 well">
                     <div class="well">
-                        <p>De Fil en Aiguille</p>
+                        <p><h4 id="texteDeFilEnAiguille">De Fil en Aiguille</h4></p>
                         <img src="<?php echo img_url('LOGO.jpg');?>" class="img-circle" height="65" width="65" alt="Avatar">
                     </div>
                     <div class="well">
@@ -140,7 +140,7 @@
                 <div class="row">
                     <div class="col-sm-3 well">
                     <div class="well">
-                        <p>De Fil en Aiguille</p>
+                        <p><h4 id="texteDeFilEnAiguille">De Fil en Aiguille</h4></p>
                         <img src="<?php echo img_url('LOGO.jpg');?>" class="img-circle" height="65" width="65" alt="Avatar">
                     </div>
 
@@ -172,7 +172,7 @@
                 <div class="row">
                     <div class="col-sm-3 well">
                     <div class="well">
-                        <p>De Fil en Aiguille</p>
+                        <p><h4 id="texteDeFilEnAiguille">De Fil en Aiguille</h4></p>
                         <img src="<?php echo img_url('LOGO.jpg');?>" class="img-circle" height="65" width="65" alt="Avatar">
                     </div>
 

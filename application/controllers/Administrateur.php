@@ -175,13 +175,13 @@ Venez vite le commander.☺';
                     $cheminPhoto = $this->input->post('txtPhotoProduit');
                 }
 
-                if ($this->input->post('PhotoProduitBis') != null and $this->input->post('PhotoProduitBis') != $this->input->post('txtPhotoProduitBis'))
+                if ($this->input->post('PhotoProduitBis') != null and $this->input->post('PhotoProduitBis') != $this->input->post('txtPhotoBisProduit'))
                 {
                     $cheminPhotoBis = $this->input->post('PhotoProduitBis');
                 }
                 else
                 {
-                    $cheminPhotoBis = $this->input->post('txtPhotoProduitBis');
+                    $cheminPhotoBis = $this->input->post('txtPhotoBisProduit');
                 }
 
                 if ($this->input->post('PhotoProduitAcceuil') != null and $this->input->post('PhotoProduitAcceuil') != $this->input->post('txtPhotoAccueilProduit'))

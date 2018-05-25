@@ -10,6 +10,7 @@
             $this->load->helper('form'); 
             $this->load->library('form_validation');
             $this->load->library('email'); 
+            $this->load->helper('assets');
 
             $this->load->library('session');
             if ($this->session->statut==NULL | $this->session->statut=='Administrateur')

@@ -1,15 +1,3 @@
-select[name=tbxCategorieProduit], select
-{
-    width : 175px;
-    height : 21px;
-}
-
-select[name=tbxMarqueProduit], select
-{
-    width : 175px;
-    height : 21px;
-}
-
 #well
 {
     border: none;
@@ -27,6 +15,21 @@ select[name=tbxMarqueProduit], select
     background-color: snow;
     border-color:#f3f7f5;
 }
+
+.input-file {
+    visibility:hidden
+}
+
+.label-file {
+    cursor: pointer;
+    color: #00b1ca;
+    font-weight: bold;
+}
+
+.label-file:hover {
+    color: #25a5c4;
+}
+
 
 #bouton:hover
 {
@@ -68,7 +71,7 @@ select[name=tbxMarqueProduit], select
 #footer
 {
     background-color: #c1d3c9;
-    padding: 50px;
+    padding: 7%;
 }
 
 .lienPanier
@@ -116,18 +119,130 @@ select[name=tbxMarqueProduit], select
 .liensCatalogue
 {
     color:black;
-	text-decoration: none;
+    text-decoration: none;
+    font-family: segoe script;
+    font-weight: bold;
 }
 
 .liensCatalogue:visited
 {
 	color:black;
-	text-decoration:none;
+    text-decoration: none;
+    font-family: segoe script;
+    font-weight: bold;
 }
 
 .liensCatalogue:hover
 {
-	color:#8aad9a;
+	color:black;
+    text-decoration: none;
+    font-family: segoe script;
+    font-weight: bold;
+}
+
+#texteDeFilEnAiguille
+{
+    font-family: segoe script;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+#TitrePage
+{
+    color: #ee9191;
+    font-family: segoe script;
+    font-size: 40px;
+}
+
+#MenuVertical
+{
+    background-color:#f3f7f5;
+}
+
+a
+{
+	color:#67a081;
 	text-decoration: none;
 }
 
+a:hover
+{
+	color:#3b6950;
+	text-decoration: bold;
+}
+
+a:visited
+{
+	color:#67a081;
+	text-decoration:none;
+}
+
+* 
+{
+    box-sizing: border-box;
+}
+
+input[type=text], input[type=password], textarea, select
+{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ee9191;
+    border-radius: 10px;
+    resize: vertical;
+}
+
+label 
+{
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+    font-family: Segoe UI Light;
+    font-size: 20px;
+}
+
+input[type=submit] 
+{
+    background-color: #ee9191;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    float: left;
+    width: 100%;
+}
+
+input[type=submit]:hover 
+{
+    background-color: #eba2a2;
+}
+
+#container
+{
+    width: 65%;
+}
+
+#container2
+{
+    width: 100%;
+    border: none;
+    background-color: transparent;
+}
+
+#lienInscription
+{
+    color:#ee9191;
+	text-decoration: none;
+}
+
+#lienInscription:hover
+{
+	color:#cc5f5f;
+	text-decoration: underline;
+}
+
+.titreAdresse
+{
+    color: #67a081;
+    font-size: 30px;
+    font-family: segoe script;
+}

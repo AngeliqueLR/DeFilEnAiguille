@@ -1,7 +1,7 @@
 <div class="col-sm-9">
 
         <?php
-            echo '<div id="hautDePage"><h2>'.$TitreDePage.'</h2><br/><br/></div>';
+            echo '<div id="hautDePage"><h2 id="TitrePage">'.$TitreDePage.'</h2><br/><br/></div>';
             $nbProduits = 0;
 
             echo '<div class="row">';
@@ -10,20 +10,20 @@
                 if ($unProduit['Promotion'] == 0)
                 {
                     $prix = $unProduit['PRIXHT'] + ($unProduit['PRIXHT'] * $unProduit['TAUXTVA'] / 100);
-                    echo '<p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], $unProduit['LIBELLE']).'</p><p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], $prix.' €').'</p><p>';
+                    echo '<p><a href="'.site_url('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT']).'" class="liensCatalogue">'.$unProduit['LIBELLE'].'</a></p><p><a href="'.site_url('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT']).'" class="liensCatalogue">'.$prix.' €</a></p><p>';
                 }
                 else
                 {
                     $prix = ($unProduit['PRIXHT'] + ($unProduit['PRIXHT'] * $unProduit['TAUXTVA'] / 100))*(1-$unProduit['Promotion']/100);
-                    echo '<p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], $unProduit['LIBELLE']).'</p><p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], $prix.' €').' | '.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], '<span class="glyphicon glyphicon-tag"></span> -'.$unProduit['Promotion'].'%').'</p><p>';
+                    echo '<p><a href="'.site_url('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT']).'" class="liensCatalogue">'.$unProduit['LIBELLE'].'</a></p><p><a href="'.site_url('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT']).'" class="liensCatalogue">'.$prix.' € | <span class="glyphicon glyphicon-tag"></span> -'.$unProduit['Promotion'].'%</a></p><p>';
                 }
                 if ($this->session->statut=='Administrateur'):
-                    echo anchor('Administrateur/ModifierProduit/'.$unProduit['NOPRODUIT'].'/'.$unProduit['QUANTITEENSTOCK'], 'Modifier ce produit'); 
+                    echo '<p><a href="'.site_url('Administrateur/ModifierProduit/'.$unProduit['NOPRODUIT'].'/'.$unProduit['QUANTITEENSTOCK']).'" class="liensCatalogue">Modifier ce produit</a></p>';
                 else:
                     if ($unProduit['QUANTITEENSTOCK'] != 0) : 
-                        echo anchor('Visiteur/AjouterPanier/'.$unProduit['NOPRODUIT'].'/'.$prix.'/'.$unProduit['QUANTITEENSTOCK'].'/'.$Catalogue, '<span class="glyphicon glyphicon-shopping-cart"></span>'); 
+                        echo '<p><a href="'.site_url('Visiteur/AjouterPanier/'.$unProduit['NOPRODUIT'].'/'.$prix.'/'.$unProduit['QUANTITEENSTOCK'].'/'.$Catalogue).'" class="liensCatalogue"><span class="glyphicon glyphicon-shopping-cart"></span></a></p>';
                     else:
-                        echo anchor('Client/Alerter/'.$unProduit['NOPRODUIT'], '<span class="glyphicon glyphicon-bell"></span>');
+                        echo '<p><a href="'.site_url('Client/Alerter/'.$unProduit['NOPRODUIT']).'" class="liensCatalogue"><span class="glyphicon glyphicon-bell"></span></a></p>';
                     endif;
                 endif;
                 echo '</p><p>'.anchor('Visiteur/VoirUnProduit/'.$unProduit['NOPRODUIT'], img_onmouseover($unProduit['NOMIMAGE'], $unProduit['NOMIMAGEBIS'])).'</p>';
