@@ -205,7 +205,7 @@
 
         public function afficherRecherche($pRechercher)
         {
-            $requete = $this->db->query('select distinct(produit.NOPRODUIT), QUANTITEENSTOCK, produit.LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, Promotion, NOMIMAGEBIS from produit, marque, categorie where (produit.NOMARQUE = marque.NOMARQUE and marque.NOM like \'%'.$pRechercher.'%\') or (produit.NOCATEGORIE = categorie.NOCATEGORIE and categorie.LIBELLE like \'%'.$pRechercher.'%\') or produit.LIBELLE like \'%'.$pRechercher.'%\'' );
+            $requete = $this->db->query('select distinct(produit.NOPRODUIT), QUANTITEENSTOCK, produit.LIBELLE, PRIXHT, TAUXTVA, NOMIMAGE, Promotion, NOMIMAGEBIS from produit, marque, categorie where (produit.NOMARQUE = marque.NOMARQUE and marque.NOM like \'%'.$pRechercher.'%\') or (produit.NOCATEGORIE = categorie.NOCATEGORIE and categorie.LIBELLE like \'%'.$pRechercher.'%\') or produit.LIBELLE like \'%'.$pRechercher.'%\' and DISPONIBLE = 1');
             return $requete->result_array();
         }
 

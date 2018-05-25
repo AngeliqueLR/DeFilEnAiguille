@@ -9,6 +9,11 @@
     background-color:#f3f7f5;
 }
 
+#panier
+{
+    background-color:#f3f7f5b6;
+}
+
 #bouton
 {
     color:#333;
@@ -245,4 +250,59 @@ input[type=submit]:hover
     color: #67a081;
     font-size: 30px;
     font-family: segoe script;
+}
+
+#alignement
+{
+    text-align: center;
+}
+
+#barreRecherche
+{
+    width: 100%;
+}
+
+.boutonAjouter
+{
+    background-color: #ee9191;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    float: left;
+    width: 100%;
+}
+
+.labelQuantite
+{
+    color: #ee9191;
+    font-family: segoe script;
+    font-size: 20px;
+}
+
+#ecriturePanel
+{
+    color: #ee9191;
+}
+
+#panelRose
+{
+    background-color: #ee9191;
+    color: white;
+}
+
+#imageProduit
+{
+    border-radius: 50px;
+    padding: 10px; 
+    width: 49%;
+    height: 49%;
+}
+
+#divProduit
+{
+    border-radius: 50px;
+    padding: 0px; 
+    background-color: #ffffffbe;
 }

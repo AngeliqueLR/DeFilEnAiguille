@@ -371,7 +371,7 @@ En espérant que vous trouverez votre bonheur chez nous.☺';
             $this->load->view('templates/Entete', $Catalogue);
             $DonneesEnvoyees['TitreDePage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
             $DonneesEnvoyees['lesProduits'] = $this->ModeleArticle->afficherRecherche($Rechercher);
-            $this->load->view('Visiteur/Catalogue', $DonneesEnvoyees, $Catalogue);
+            $this->load->view('Visiteur/CatalogueAvecPagination/', $DonneesEnvoyees, $Catalogue);
             $this->load->view('templates/PiedDePage');            
         }
 

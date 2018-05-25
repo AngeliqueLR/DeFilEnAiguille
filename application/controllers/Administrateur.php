@@ -13,7 +13,12 @@
             $this->load->helper('assets');
 
             $this->load->library('session');
-            if ($this->session->statut=='Client'or is_null($this->session->statut))
+            if ($this->session->statut=='Client')
+            {
+                $this->load->helper('url');
+                redirect('/Visiteur/Accueil');
+            }
+            elseif (is_null($this->session->statut))
             {
                 $this->load->helper('url');
                 redirect('/Visiteur/seConnecter');
@@ -202,7 +207,7 @@ Venez vite le commander.☺';
 
                 $this->ModeleArticle->ModifierProduit($DonneesAModifier, $pNoProduit);
                 $this->load->helper('url');
-                redirect('/Administrateur/ModifierProduit/'.$pNoProduit.'/'.$pQte);
+                redirect('/Visiteur/AfficherCatalogue');
             }
             else 
             {                

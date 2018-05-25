@@ -13,11 +13,16 @@
             $this->load->helper('assets');
 
             $this->load->library('session');
-            if ($this->session->statut==NULL | $this->session->statut=='Administrateur')
+            if (is_null($this->session->statut))
             {
                 $this->load->helper('url');
                 redirect('/Visiteur/seConnecter');
             }   
+            elseif($this->session->statut=='Administrateur')
+            {
+                $this->load->helper('url');
+                redirect('/Visiteur/Accueil');
+            }
         }
 
         

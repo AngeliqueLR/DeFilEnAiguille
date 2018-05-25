@@ -85,14 +85,10 @@
                     <div class="well">
                         <ul><a href="<?php echo site_url('Visiteur/listerLesArticlesAvecPagination') ?>">• Catalogue (par 3) •</a></ul>
                         <?php echo form_open('Visiteur/afficherRecherche'); ?>
-                        
-                            <div class="form-group input-group">
-                                <input name="txtRechercher" type="text" class="form-control" placeholder="Rechercher.." autocomplete = "on">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-info" type="submit" style="height = 34">
-                                        <span class="glyphicon glyphicon-search"></span>
-                                    </button>
-                                </span>        
+                            <div class="form-group">
+                                <div class='row'>
+                                    <input id="barreRecherche" name="txtRechercher" type="text" class="form-control" placeholder="Rechercher.." autocomplete = "on">
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -138,7 +134,7 @@
             <br/><br/>
             <div class="container text-center">    
                 <div class="row">
-                    <div class="col-sm-3 well">
+                    <div class="col-sm-2 well">
                     <div class="well">
                         <p><h4 id="texteDeFilEnAiguille">De Fil en Aiguille</h4></p>
                         <img src="<?php echo img_url('LOGO.jpg');?>" class="img-circle" height="65" width="65" alt="Avatar">
