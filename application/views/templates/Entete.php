@@ -87,7 +87,7 @@
                         <?php echo form_open('Visiteur/afficherRecherche'); ?>
                             <div class="form-group">
                                 <div class='row'>
-                                    <input id="barreRecherche" name="txtRechercher" type="text" class="form-control" placeholder="Rechercher.." autocomplete = "on">
+                                    <input id="barreRecherche" name="txtRechercher" type="text" class="form-control" placeholder="Rechercher..">
                                 </div>
                             </div>
                         </form>

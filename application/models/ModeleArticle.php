@@ -37,7 +37,7 @@
             return $this->db->insert('CATEGORIE', $pDonneesAInserer);
         }
 
-        public function retournerArticlesLimite($nombreDeLignesARetourner, $noPremiereLigneARetourner)
+        public function retournerArticlesLimite($nombreDeLignesARetourner, $noPremiereLigneARetourner)//, $pRechercher = NULL)
         {
             $this->db->limit($nombreDeLignesARetourner, $noPremiereLigneARetourner);
             $requete = $this->db->get_where("PRODUIT", array('DISPONIBLE' => 1));
@@ -49,12 +49,36 @@
                     return $requete->result_array(); 
                 }
             }
+            
             return false;
         }
 
-        public function nombreDArticles() 
+        public function retournerArticlesLimitePagination($nombreDeLignesARetourner, $noPremiereLigneARetourner, $pRechercher)
         {
-            return $this->db->count_all("PRODUIT");
+                $this->db->limit($nombreDeLignesARetourner, $noPremiereLigneARetourner);
+                $this->db->select('distinct(NOPRODUIT), PRODUIT.LIBELLE, PRIXHT, TAUXTVA, QUANTITEENSTOCK, NOMIMAGE, NOMIMAGEBIS, NOMIMAGEACCEUIL, DETAIL, Promotion');
+                $requete = $this->db->get_where("PRODUIT, CATEGORIE, MARQUE", '((produit.NOMARQUE = marque.NOMARQUE and marque.NOM like \'%'.$pRechercher.'%\') or (produit.NOCATEGORIE = categorie.NOCATEGORIE and categorie.LIBELLE like \'%'.$pRechercher.'%\') or produit.LIBELLE like \'%'.$pRechercher.'%\') and DISPONIBLE = 1');
+                
+                if($requete->num_rows() > 0)
+                {
+                   foreach ($requete->result() as $ligne)
+                    {
+                        return $requete->result_array(); 
+                    }
+                }
+            
+            return false;
+        }
+
+        public function nombreDArticles()//$pRechercher = NULL) 
+        {
+           return $this->db->count_all("PRODUIT");
+        }
+
+        public function nombreDArticlesPagination($pRechercher = NULL) 
+        {
+            $requete = $this->db->query('select count(distinct(NOPRODUIT)) from produit, marque, categorie where ((produit.NOMARQUE = marque.NOMARQUE and marque.NOM like \'%'.$pRechercher.'%\') or (produit.NOCATEGORIE = categorie.NOCATEGORIE and categorie.LIBELLE like \'%'.$pRechercher.'%\') or produit.LIBELLE like \'%'.$pRechercher.'%\') and DISPONIBLE = 1');
+            return implode($requete->row_array());
         }
 
         public function retournerArticlesParCategorie($pCategorieChoisie)

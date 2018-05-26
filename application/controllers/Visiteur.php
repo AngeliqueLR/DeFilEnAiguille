@@ -194,33 +194,33 @@ En espérant que vous trouverez votre bonheur chez nous.☺';
             redirect('/Visiteur/AfficherCatalogue');
         }
 
-        public function listerLesArticlesAvecPagination() 
+        public function listerLesArticlesAvecPagination()//$Rechercher = NULL) 
         {
-            $Catalogue['Catalogue'] = 'oui';
-            $Catalogue['lesCategories'] = $this->ModeleArticle->retournerCategories();
-            $Catalogue['lesMarques'] = $this->ModeleArticle->retournerMarques();
+                $Catalogue['Catalogue'] = 'oui';
+                $Catalogue['lesCategories'] = $this->ModeleArticle->retournerCategories();
+                $Catalogue['lesMarques'] = $this->ModeleArticle->retournerMarques();
 
-            $config = array();
-            $config["base_url"] = site_url('Visiteur/listerLesArticlesAvecPagination');
-            $config["total_rows"] = $this->ModeleArticle->nombreDArticles();
-            $config["per_page"] = 3;
-            $config["uri_segment"] = 3;
+                $config = array();
+                $config["base_url"] = site_url('Visiteur/listerLesArticlesAvecPagination/');
+                $config["total_rows"] = $this->ModeleArticle->nombreDArticles();//$Rechercher);
+                $config["per_page"] = 3;
+                $config["uri_segment"] = 3;
 
-            $config["first_link"] = "<span class='glyphicon glyphicon-backward'></span> ";
-            $config["last_link"] = " <span class='glyphicon glyphicon-forward'></span>";
-            $config["next_link"] = "  <span class='glyphicon glyphicon-chevron-right'></span>";
-            $config["prev_link"] = "<span class='glyphicon glyphicon-chevron-left'></span>  ";
+                $config["first_link"] = "<span class='glyphicon glyphicon-backward'></span> ";
+                $config["last_link"] = " <span class='glyphicon glyphicon-forward'></span>";
+                $config["next_link"] = "  <span class='glyphicon glyphicon-chevron-right'></span>";
+                $config["prev_link"] = "<span class='glyphicon glyphicon-chevron-left'></span>  ";
 
-            $this->pagination->initialize($config);
+                $this->pagination->initialize($config);
 
-            $noPage = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+                $noPage = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 
-            $DonneesEnvoyees['TitreDeLaPage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
-            $DonneesEnvoyees['LesProduits'] = $this->ModeleArticle->retournerArticlesLimite($config["per_page"], $noPage);
-            $DonneesEnvoyees['liensPagination'] = $this->pagination->create_links();
-            $this->load->view('templates/Entete', $Catalogue);
-            $this->load->view('Visiteur/CatalogueAvecPagination', $DonneesEnvoyees, $Catalogue);
-            $this->load->view('templates/PiedDePage');  
+                $DonneesEnvoyees['TitreDeLaPage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
+                $DonneesEnvoyees['LesProduits'] = $this->ModeleArticle->retournerArticlesLimite($config["per_page"], $noPage);
+                $DonneesEnvoyees['liensPagination'] = $this->pagination->create_links();
+                $this->load->view('templates/Entete', $Catalogue);
+                $this->load->view('Visiteur/CatalogueAvecPagination', $DonneesEnvoyees, $Catalogue);
+                $this->load->view('templates/PiedDePage');  
         }
 
         public function Accueil()
@@ -363,16 +363,37 @@ En espérant que vous trouverez votre bonheur chez nous.☺';
 
         public function afficherRecherche()
         {
-            $Catalogue['Catalogue'] = 'oui';
             $Rechercher = $this->input->post('txtRechercher');
+            redirect('Visiteur/rechercherLesArticlesAvecPagination/'.$Rechercher);      
+        }
+
+        public function rechercherLesArticlesAvecPagination($Rechercher)
+        {
+            $Catalogue['Catalogue'] = 'oui';
             $Catalogue['lesCategories'] = $this->ModeleArticle->retournerCategories();
             $Catalogue['lesMarques'] = $this->ModeleArticle->retournerMarques();
+
+            $config = array();
+            $config["total_rows"] = $this->ModeleArticle->nombreDArticlesPagination($Rechercher);
+            $config["per_page"] = 3;
+            $config["uri_segment"] = 4;            
+            $config["base_url"] = site_url('Visiteur/rechercherLesArticlesAvecPagination/'.$Rechercher);
+
+            $config["first_link"] = "<span class='glyphicon glyphicon-backward'></span> ";
+            $config["last_link"] = " <span class='glyphicon glyphicon-forward'></span>";
+            $config["next_link"] = "  <span class='glyphicon glyphicon-chevron-right'></span>";
+            $config["prev_link"] = "<span class='glyphicon glyphicon-chevron-left'></span>  ";
+
+            $this->pagination->initialize($config);
             
+            $noPage = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+            
+            $DonneesEnvoyees['TitreDeLaPage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
+            $DonneesEnvoyees['LesProduits'] = $this->ModeleArticle->retournerArticlesLimitePagination($config['per_page'], $noPage, $Rechercher);
+            $DonneesEnvoyees['liensPagination'] = $this->pagination->create_links();
             $this->load->view('templates/Entete', $Catalogue);
-            $DonneesEnvoyees['TitreDePage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
-            $DonneesEnvoyees['lesProduits'] = $this->ModeleArticle->afficherRecherche($Rechercher);
-            $this->load->view('Visiteur/CatalogueAvecPagination/', $DonneesEnvoyees, $Catalogue);
-            $this->load->view('templates/PiedDePage');            
+            $this->load->view('Visiteur/CatalogueAvecPagination', $DonneesEnvoyees, $Catalogue);
+            $this->load->view('templates/PiedDePage');
         }
 
         public function APropos()
