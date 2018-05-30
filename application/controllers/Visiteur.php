@@ -389,7 +389,7 @@ En espérant que vous trouverez votre bonheur chez nous.☺';
             $noPage = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
             
             $DonneesEnvoyees['TitreDeLaPage'] = 'De fil en aiguille trouvez votre petit bonheur par ici';
-            $DonneesEnvoyees['LesProduits'] = $this->ModeleArticle->retournerArticlesLimitePagination($config['per_page'], $noPage, $Rechercher);
+            $DonneesEnvoyees['LesProduits'] = $this->ModeleArticle->retournerArticlesLimitePagination($config['per_page'], $noPage, $Rechercher); 
             $DonneesEnvoyees['liensPagination'] = $this->pagination->create_links();
             $this->load->view('templates/Entete', $Catalogue);
             $this->load->view('Visiteur/CatalogueAvecPagination', $DonneesEnvoyees, $Catalogue);
